@@ -1,4 +1,5 @@
 from framol.molecule import Molecule
+from framol.io import FileHandlerXYZ
 
 
-version = "0.1dev"
+__version__ = "0.1"
