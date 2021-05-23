@@ -1,15 +1,20 @@
 name: build
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-with-pip:
     name: ubuntu-latest-3.7
     timeout-minutes: 5
-    strategy:
-      os: ubuntu-latest
-      python-version: 3.7
-      fail-fast: false
+    runs-on: ubuntu-latest
+    python-version: 3.7
+    fail-fast: false
 
     steps:
       - uses: actions/checkout@v2
