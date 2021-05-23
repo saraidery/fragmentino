@@ -1,0 +1,30 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build-with-pip:
+    name: ubuntu-latest-3.7
+    timeout-minutes: 5
+    strategy:
+      os: ubuntu-latest
+      python-version: 3.7
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ runner.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ runner.python-version }}
+      - name: Display versions
+        run: python -V; pip -V
+      - name: Install depedencies and package
+        shell: bash
+        run: pip install -U -e .'[tests]'
+      - name: Run tests
+        run: pytest --cov=framol --pyargs framol
+      - name: Generate line coverage
+        run: coverage report --show-missing
+
+
