@@ -8,6 +8,6 @@ setup(
 	name="framol",
 	author="Sarai D. Folkestad",
 	description="Description of package",
-	install_requires=["numpy"],
+	install_requires=["numpy", "pandas"],
 	extras_require=extra_requirements
 )
