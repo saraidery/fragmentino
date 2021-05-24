@@ -1,4 +1,8 @@
+import numpy as np
+
+
 from framol.io import FileHandlerXYZ
+from framol.periodic_table import number_to_symbol, symbol_to_number
 
 
 class Molecule:
@@ -30,14 +34,16 @@ class Molecule:
 	def write(self, file_name):
 
 		fh = FileHandlerXYZ(file_name)
-		fh.write(self)
+		symbols = list(map(number_to_symbol, self.atomic_numbers))
+		fh.write(symbols, self.coordinates)
 
-	#@classmethod
-	#def from_xyz_file(cls, file_name):
+	@classmethod
+	def from_xyz_file(cls, file_name):
 
-		#fh = FileHandlerXYZ(file_name)
-		#xyz, atomic_symbols = fh.read()
-		# Atomic symbols -> atomic numbers
-		#return cls(xyz, atomic_numbers)
+		fh = FileHandlerXYZ(file_name)
+		symbols, xyz = fh.read()
+		atomic_numbers = np.fromiter(map(symbol_to_number, symbols), dtype=int)
+		return cls(xyz, atomic_numbers)
+
 
 
