@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.spatial import distance_matrix
 
 
 from framol.io import FileHandlerXYZ
@@ -6,44 +7,69 @@ from framol.periodic_table import number_to_symbol, symbol_to_number
 
 
 class Molecule:
-	"""Molecule class definition
-	"""
-	def __init__(self, coordinates, atomic_numbers):
+    """Molecule class"""
 
-		if coordinates.ndim != 2 or coordinates.shape[1] != 3:
-			raise ValueError('atomic coordinates must be of shape (N,3)')
+    def __init__(self, atomic_numbers, xyz):
+        """Creates a molecule
 
-		if atomic_numbers.ndim != 1:
-			raise ValueError('atomic numbers must be of shape (N)')
+        Parameters
+        ----------
+        atomic_numbers : numpy array, int, shape(N)
+            Atomic numbers (index n perodic table)
 
-		if atomic_numbers.shape[0] != coordinates.shape[0]:
-			raise ValueError('different number of atoms" specified')
+        xyz : numpy array, float, shape (N,3)
+            Cartesian coordinates in Angstrom
+        """
+        if xyz.ndim != 2 or xyz.shape[1] != 3:
+            raise ValueError("xyz must be of shape (N,3)")
 
-		self.coordinates = coordinates
-		self.atomic_numbers = atomic_numbers
+        if atomic_numbers.ndim != 1:
+            raise ValueError("atomic numbers must be of shape (N)")
 
-	def __repr__(self):
+        if atomic_numbers.shape[0] != xyz.shape[0]:
+            raise ValueError("different number of atoms specified")
 
-		return f"{self.__class__.__name__} {self.size}"
+        self.xyz = xyz
+        self.atomic_numbers = atomic_numbers
 
-	@property
-	def size(self):
+    @classmethod
+    def from_xyz_file(cls, file_name):
 
-		return self.coordinates.shape[0]
+        fh = FileHandlerXYZ(file_name)
+        symbols, xyz = fh.read()
+        atomic_numbers = np.fromiter(map(symbol_to_number, symbols), dtype=int)
+        return cls(atomic_numbers, xyz)
 
-	def write(self, file_name):
+    @classmethod
+    def from_molecules(cls, m1, m2):
 
-		fh = FileHandlerXYZ(file_name)
-		symbols = list(map(number_to_symbol, self.atomic_numbers))
-		fh.write(symbols, self.coordinates)
+        atomic_numbers = np.concatenate((m1.atomic_numbers, m2.atomic_numbers))
+        xyz = np.vstack((m1.xyz, m2.xyz))
 
-	@classmethod
-	def from_xyz_file(cls, file_name):
+        return cls(atomic_numbers, xyz)
 
-		fh = FileHandlerXYZ(file_name)
-		symbols, xyz = fh.read()
-		atomic_numbers = np.fromiter(map(symbol_to_number, symbols), dtype=int)
-		return cls(xyz, atomic_numbers)
+    def __repr__(self):
+        return f"{self.__class__.__name__} {self.size}"
 
+    @property
+    def distances(self):
+        """Distances between atoms in molecule"""
+        return distance_matrix(self.xyz, self.xyz)
 
+    @property
+    def size(self):
+        """Number of atoms in molecule"""
 
+        return self.xyz.shape[0]
+
+    def write(self, file_name: str):
+        """Writes the molecular geometry to an xyz-file.
+
+        Parameters
+        ----------
+        file_name
+            File name with full or relative path
+        """
+        fh = FileHandlerXYZ(file_name)
+        symbols = list(map(number_to_symbol, self.atomic_numbers))
+        fh.write(symbols, self.xyz)
