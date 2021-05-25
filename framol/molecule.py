@@ -73,3 +73,17 @@ class Molecule:
         fh = FileHandlerXYZ(file_name)
         symbols = list(map(number_to_symbol, self.atomic_numbers))
         fh.write(symbols, self.xyz)
+
+    def merge(self, other):
+        """Merge
+
+        Parameters
+        ----------
+        other : Molecule
+            The other molecule to merge with
+
+        """
+        self.atomic_numbers = np.concatenate(
+            (self.atomic_numbers, other.atomic_numbers)
+        )
+        self.xyz = np.vstack((self.xyz, other.xyz))

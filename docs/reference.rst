@@ -20,3 +20,19 @@ FileHandlerXYZ
 
 .. autoclass:: framol.FileHandlerXYZ
     :members:
+
+SimpleWeightedGraph
+===================
+
+.. currentmodule:: framol.graph
+
+.. autoclass:: framol.SimpleWeightedGraph
+    :members:
+
+WeightedGraph
+=============
+
+.. currentmodule:: framol.graph
+
+.. autoclass:: framol.WeightedGraph
+    :members:
