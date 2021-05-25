@@ -9,8 +9,6 @@ class SimpleWeightedGraph:
     ----------
     vertices : list
         list of any type
-    max_vertex_size : int
-        Maximal size of vertex
 
     """
 
@@ -54,41 +52,31 @@ class WeightedGraph(SimpleWeightedGraph):
         Contract edges (merge vertices) until no vertices
         can be merged without exceeding the maximal vertex size
 
+        Always try to merge the vertices with the smallest edge weight
+
+        Note
+        ----
+        Converts weights and edges to numpy.ndarray and sorts them according
+        to ascending weight
+
         """
-
-        self._sort_edges_by_weight()
-        edge_index = self._determine_next_edge_contraction()
-
-        while edge_index != -1:
-
-            self._edge_contraction(edge_index)
-            edge_index = self._determine_next_edge_contraction()
-
-
-    def _sort_edges_by_weight(self):
-        """Sort edges by weights"""
-
         self.weights = np.array(self.weights)
         self.edges = np.array(self.edges)
 
+        self._sort_edges_by_weight()
+        edge_index = self._determine_next_graph_contraction()
+
+        while edge_index != -1:
+
+            self._graph_contraction(edge_index)
+            edge_index = self._determine_next_graph_contraction()
+
+    def _sort_edges_by_weight(self):
+        """Sort edges by weights"""
         self.edges = self.edges[self.weights.argsort()]
         self.weights.sort()
 
-    def _can_merge_vertices(self, edge):
-        """Can merge vertices
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-        bool
-            True if a merge of vertex v1 and v2 will not result in a vertex that exceeds the maximal size
-        """
-        v1, v2 = edge
-        return (self.vertices[v1].size + self.vertices[v2].size) < self._max_vertex_size
-
-    def _determine_next_edge_contraction(self):
+    def _determine_next_graph_contraction(self):
         """Determine next edge contraction
 
         Returns
@@ -98,20 +86,48 @@ class WeightedGraph(SimpleWeightedGraph):
         """
 
         for edge_index, edge in enumerate(self.edges):
-            if self._can_merge_vertices(edge):
+            if self._can_graph_contraction(edge):
                 return edge_index
         return -1
 
-    def _edge_contraction(self, edge_index):
-        """Edge contraction"""
+    def _can_graph_contraction(self, edge):
+        """Can contract edge
 
-        self._update_vertices(edge_index)
-        self._update_edges(edge_index)
+        Checks if the passed edge can be contracted
+        without resulting in a new vertex that exceeds the maximum vertex size
 
-    def _update_vertices(self, edge_index):
-        """Update vertices inplace"""
+        Parameters
+        ----------
+        edge : numpy.ndarray
+
+        Returns
+        -------
+        bool
+            True if contraction is possible
+        """
+
+        v1, v2 = edge
+        return (self.vertices[v1].size + self.vertices[v2].size) < self._max_vertex_size
+
+    def _graph_contraction(self, edge_index):
+        """Graph contraction
+
+        Merges the two vertices of the edge (given by edge_index) and
+        contracts the edge.
+
+        """
 
         v1, v2 = self.edges[edge_index]
+
+
+        self._delete_edge(edge_index)
+        self._merge_vertices(v1, v2) # Vertex indices changes
+        self._remove_duplicate_edges(v1, v2)
+
+        self._update_vertex_indices_in_edges(v1, v2)
+
+    def _merge_vertices(self, v1, v2):
+        """Update vertices"""
 
         # Copy the vertices that are to be merged
         v1_copy = deepcopy(self.vertices[v1])
@@ -129,47 +145,49 @@ class WeightedGraph(SimpleWeightedGraph):
         v1_copy.merge(v2_copy)
         self.vertices.append(v1_copy)
 
-
-    def _update_edges(self, edge_index):
-        """Update edges inplace"""
-
-        v1, v2 = self.edges[edge_index]
-
-        self._contract_edge(edge_index)
-        self._remove_duplicate_edges(v1, v2)
-
-        for edge in self.edges:
-            self._update_vertex_indices_in_edges(edge, v1, v2)
-
-
-    def _contract_edge(self, edge_index):
+    def _delete_edge(self, edge_index):
+        """Delete edge"""
         self.edges = np.delete(self.edges, edge_index, axis=0)
         self.weights = np.delete(self.weights, edge_index, axis=0)
 
     def _remove_duplicate_edges(self, v1, v2):
+        """Remove duplicate edges"""
         found_indices = []
         delete_indices = []
 
-        def _update_found_and_delete(j, v, found_indices, delete_indices):
+        def _update_found_and_delete(edge_index, v, found_indices, delete_indices):
             if v in found_indices:
-                delete_indices.append(j)
+                delete_indices.append(edge_index)
             else:
                 found_indices.append(v)
 
-        for j, edge in enumerate(self.edges):
+        for edge_index, edge in enumerate(self.edges):
 
             if edge[0] == v1 or edge[0] == v2:
-                _update_found_and_delete(j, edge[1], found_indices, delete_indices)
+                _update_found_and_delete(
+                    edge_index, edge[1], found_indices, delete_indices
+                )
 
             elif edge[1] == v1 or edge[1] == v2:
-                _update_found_and_delete(j, edge[0], found_indices, delete_indices)
+                _update_found_and_delete(
+                    edge_index, edge[0], found_indices, delete_indices
+                )
 
         self.edges = np.delete(self.edges, delete_indices, axis=0)
         self.weights = np.delete(self.weights, delete_indices, axis=0)
 
-    def _update_vertex_indices_in_edges(self, edge, v1, v2):
-        """Update vertex indices in edges inplace"""
+    def _update_vertex_indices_in_edges(self, v1, v2):
+        """Update vertex indices in edges
 
+        Parameters
+        ----------
+        v1 : int
+            index of first vertex to merge
+        v2 : int
+            index of second vertex to merge
+        """
+
+        # Rules for updating vertex index (v), when vertex v1 and v2 are merged
         def _update_vertex_index(v, v1, v2):
             if (v > v1 and v < v2) or (v > v2 and v < v1):
                 return v - 1
@@ -180,5 +198,6 @@ class WeightedGraph(SimpleWeightedGraph):
             else:
                 return v
 
-        edge[0] = _update_vertex_index(edge[0], v1, v2)
-        edge[1] = _update_vertex_index(edge[1], v1, v2)
+        for edge in self.edges:
+            edge[0] = _update_vertex_index(edge[0], v1, v2)
+            edge[1] = _update_vertex_index(edge[1], v1, v2)
