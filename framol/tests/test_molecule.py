@@ -9,33 +9,6 @@ from framol import io
 
 
 class TestMolecule:
-    @pytest.mark.parametrize("shape", [(3, 3, 4), (3, 4)])
-    def test_init_fail_xyz(self, shape):
-
-        xyz = np.zeros(shape)
-        atomic_numbers = np.arange(1, 4)
-
-        with pytest.raises(ValueError, match="xyz must be"):
-
-            m = Molecule(atomic_numbers, xyz)
-
-    def test_init_fail_atomic_numbers(self):
-
-        xyz = np.zeros((3, 3))
-        atomic_numbers = np.zeros((3, 3))
-
-        with pytest.raises(ValueError, match="atomic numbers"):
-
-            m = Molecule(atomic_numbers, xyz)
-
-    def test_init_fail_n_atoms(self):
-
-        xyz = np.zeros((5, 3))
-        atomic_numbers = np.arange(1, 4)
-
-        with pytest.raises(ValueError, match="different number of atoms"):
-
-            m = Molecule(atomic_numbers, xyz)
 
     def test_init(self):
         xyz = np.zeros((5, 3))

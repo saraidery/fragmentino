@@ -14,21 +14,12 @@ class Molecule:
 
         Parameters
         ----------
-        atomic_numbers : numpy array, int, shape(N)
+        atomic_numbers : numpy array, int
             Atomic numbers (index n perodic table)
 
-        xyz : numpy array, float, shape (N,3)
+        xyz : numpy array, float
             Cartesian coordinates in Angstrom
         """
-        if xyz.ndim != 2 or xyz.shape[1] != 3:
-            raise ValueError("xyz must be of shape (N,3)")
-
-        if atomic_numbers.ndim != 1:
-            raise ValueError("atomic numbers must be of shape (N)")
-
-        if atomic_numbers.shape[0] != xyz.shape[0]:
-            raise ValueError("different number of atoms specified")
-
         self.xyz = xyz
         self.atomic_numbers = atomic_numbers
 

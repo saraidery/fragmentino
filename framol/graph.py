@@ -119,21 +119,16 @@ class WeightedGraph(SimpleWeightedGraph):
 
         v1, v2 = self.edges[edge_index]
 
-
         self._delete_edge(edge_index)
-        self._merge_vertices(v1, v2) # Vertex indices changes
-        self._remove_duplicate_edges(v1, v2)
+        self._merge_vertices(v1, v2)
 
-        self._update_vertex_indices_in_edges(v1, v2)
+        self._remove_duplicate_edges()
 
     def _merge_vertices(self, v1, v2):
         """Update vertices"""
-
-        # Copy the vertices that are to be merged
         v1_copy = deepcopy(self.vertices[v1])
         v2_copy = deepcopy(self.vertices[v2])
 
-        # Delete vertices that are to be merged
         if v1 > v2:
             del self.vertices[v1]
             del self.vertices[v2]
@@ -141,40 +136,26 @@ class WeightedGraph(SimpleWeightedGraph):
             del self.vertices[v2]
             del self.vertices[v1]
 
-        # Merge vertices and add to list
         v1_copy.merge(v2_copy)
         self.vertices.append(v1_copy)
+
+        self._update_vertex_indices_in_edges(v1, v2)
 
     def _delete_edge(self, edge_index):
         """Delete edge"""
         self.edges = np.delete(self.edges, edge_index, axis=0)
         self.weights = np.delete(self.weights, edge_index, axis=0)
 
-    def _remove_duplicate_edges(self, v1, v2):
+    def _remove_duplicate_edges(self):
         """Remove duplicate edges"""
-        found_indices = []
-        delete_indices = []
+        for edge in self.edges:
 
-        def _update_found_and_delete(edge_index, v, found_indices, delete_indices):
-            if v in found_indices:
-                delete_indices.append(edge_index)
-            else:
-                found_indices.append(v)
+            occurences = (self.edges == edge).all(axis=1)
+            indices = np.nonzero(occurences)[0]
 
-        for edge_index, edge in enumerate(self.edges):
-
-            if edge[0] == v1 or edge[0] == v2:
-                _update_found_and_delete(
-                    edge_index, edge[1], found_indices, delete_indices
-                )
-
-            elif edge[1] == v1 or edge[1] == v2:
-                _update_found_and_delete(
-                    edge_index, edge[0], found_indices, delete_indices
-                )
-
-        self.edges = np.delete(self.edges, delete_indices, axis=0)
-        self.weights = np.delete(self.weights, delete_indices, axis=0)
+            if indices.size > 1:
+                self.edges = np.delete(self.edges, indices[1:], axis=0)
+                self.weights = np.delete(self.weights, indices[1:], axis=0)
 
     def _update_vertex_indices_in_edges(self, v1, v2):
         """Update vertex indices in edges
@@ -182,9 +163,9 @@ class WeightedGraph(SimpleWeightedGraph):
         Parameters
         ----------
         v1 : int
-            index of first vertex to merge
+            index of first vertex that was merged
         v2 : int
-            index of second vertex to merge
+            index of second vertex that was merged
         """
 
         # Rules for updating vertex index (v), when vertex v1 and v2 are merged
