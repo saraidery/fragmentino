@@ -84,7 +84,6 @@ class WeightedGraph(SimpleWeightedGraph):
         int
             index for next edge to contract
         """
-
         for edge_index, edge in enumerate(self.edges):
             if self._can_graph_contraction(edge):
                 return edge_index
@@ -105,7 +104,6 @@ class WeightedGraph(SimpleWeightedGraph):
         bool
             True if contraction is possible
         """
-
         v1, v2 = edge
         return (self.vertices[v1].size + self.vertices[v2].size) < self._max_vertex_size
 
@@ -168,7 +166,7 @@ class WeightedGraph(SimpleWeightedGraph):
             index of second vertex that was merged
         """
 
-        # Rules for updating vertex index (v), when vertex v1 and v2 are merged
+        # Rules for updating vertex index (v), when vertex v1 and v2 have been merged
         def _update_vertex_index(v, v1, v2):
             if (v > v1 and v < v2) or (v > v2 and v < v1):
                 return v - 1

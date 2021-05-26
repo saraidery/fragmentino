@@ -9,7 +9,6 @@ from framol import io
 
 
 class TestMolecule:
-
     def test_init(self):
         xyz = np.zeros((5, 3))
         atomic_numbers = np.arange(1, 6)

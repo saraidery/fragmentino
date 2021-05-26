@@ -3,7 +3,7 @@ from scipy.spatial import distance_matrix
 
 
 from framol.io import FileHandlerXYZ
-from framol.periodic_table import number_to_symbol, symbol_to_number
+from framol.periodic_table import number_to_symbol, symbol_to_number, covalent_radii
 
 
 class Molecule:
@@ -78,3 +78,14 @@ class Molecule:
             (self.atomic_numbers, other.atomic_numbers)
         )
         self.xyz = np.vstack((self.xyz, other.xyz))
+
+    def get_covalent_bond_distances(self):
+        """Get covalent bond distances"""
+
+        bonds = np.zeros((self.size, self.size))
+        for Z in self.atomic_numbers:
+            bonds[Z-1, :] += covalent_radii[Z-1]
+            bonds[:, Z-1] += covalent_radii[Z-1]
+
+        bonds = bonds * 1.1
+        return bonds
