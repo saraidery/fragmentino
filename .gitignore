@@ -130,5 +130,5 @@ dmypy.json
 
 
 # Mine
-
+.DS_Store
 testing*

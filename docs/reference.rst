@@ -4,6 +4,14 @@ API reference
 
 .. module:: framol
 
+MolecularFragmenter
+===================
+
+.. currentmodule:: framol.molecular_fragmenter
+
+.. autoclass:: framol.MolecularFragmenter
+    :members:
+
 Molecule
 ========
 

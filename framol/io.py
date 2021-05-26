@@ -66,7 +66,7 @@ class FileHandlerXYZ:
             self.file_name,
             np.c_[symbols, xyz],
             encoding="utf-8",
-            fmt="%s %.10s %.10s %.10s",
+            fmt="%s %.20s %.20s %.20s",
             header="\n".join([str(xyz.shape[0]), comment]),
             comments="",
         )

@@ -2,7 +2,7 @@ from setuptools import setup
 
 extra_requirements = {
     "tests": ["pytest", "coverage", "pytest-cov"],
-    "docs": ["sphinx", "sphinx-autodoc-typehints"],
+    "docs": ["sphinx", "sphinx-autodoc-typehints", "guzzle_sphinx_theme"],
 }
 
 setup(

@@ -51,7 +51,7 @@ class Molecule:
     def size(self):
         """Number of atoms in molecule"""
 
-        return self.xyz.shape[0]
+        return self.atomic_numbers.size
 
     def write(self, file_name: str):
         """Writes the molecular geometry to an xyz-file.
@@ -74,18 +74,29 @@ class Molecule:
             The other molecule to merge with
 
         """
-        self.atomic_numbers = np.concatenate(
-            (self.atomic_numbers, other.atomic_numbers)
-        )
+        if self.atomic_numbers.ndim + other.atomic_numbers.ndim == 0:
+            self.atomic_numbers = np.array([self.atomic_numbers, other.atomic_numbers])
+        elif self.atomic_numbers.ndim + other.atomic_numbers.ndim == 1:
+            self.atomic_numbers = np.append(self.atomic_numbers, other.atomic_numbers)
+        else:
+            self.atomic_numbers = np.concatenate(
+                (self.atomic_numbers, other.atomic_numbers)
+            )
+
         self.xyz = np.vstack((self.xyz, other.xyz))
 
     def get_covalent_bond_distances(self):
         """Get covalent bond distances"""
 
         bonds = np.zeros((self.size, self.size))
-        for Z in self.atomic_numbers:
-            bonds[Z-1, :] += covalent_radii[Z-1]
-            bonds[:, Z-1] += covalent_radii[Z-1]
+        for i, Z in enumerate(self.atomic_numbers):
+            bonds[i, :] += covalent_radii[Z - 1]
+            bonds[:, i] += covalent_radii[Z - 1]
 
         bonds = bonds * 1.1
         return bonds
+
+    def add_atom(self, atomic_number, xyz):
+        """Add atom"""
+        self.atomic_numbers = np.append(self.atomic_numbers, atomic_number)
+        self.xyz = np.vstack((self.xyz, xyz))
