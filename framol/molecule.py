@@ -20,8 +20,8 @@ class Molecule:
         xyz : numpy array, float
             Cartesian coordinates in Angstrom
         """
-        self.xyz = xyz
-        self.atomic_numbers = atomic_numbers
+        self.xyz = np.array(xyz)
+        self.atomic_numbers = np.array(atomic_numbers)
 
     @classmethod
     def from_xyz_file(cls, file_name):
@@ -34,7 +34,7 @@ class Molecule:
     @classmethod
     def from_molecules(cls, m1, m2):
 
-        atomic_numbers = np.concatenate((m1.atomic_numbers, m2.atomic_numbers))
+        atomic_numbers = np.hstack((m1.atomic_numbers, m2.atomic_numbers))
         xyz = np.vstack((m1.xyz, m2.xyz))
 
         return cls(atomic_numbers, xyz)
@@ -50,15 +50,14 @@ class Molecule:
     @property
     def size(self):
         """Number of atoms in molecule"""
-
         return self.atomic_numbers.size
 
-    def write(self, file_name: str):
+    def write(self, file_name):
         """Writes the molecular geometry to an xyz-file.
 
         Parameters
         ----------
-        file_name
+        file_name : str
             File name with full or relative path
         """
         fh = FileHandlerXYZ(file_name)
@@ -74,29 +73,51 @@ class Molecule:
             The other molecule to merge with
 
         """
-        if self.atomic_numbers.ndim + other.atomic_numbers.ndim == 0:
-            self.atomic_numbers = np.array([self.atomic_numbers, other.atomic_numbers])
-        elif self.atomic_numbers.ndim + other.atomic_numbers.ndim == 1:
-            self.atomic_numbers = np.append(self.atomic_numbers, other.atomic_numbers)
-        else:
-            self.atomic_numbers = np.concatenate(
-                (self.atomic_numbers, other.atomic_numbers)
-            )
+        self.atomic_numbers = np.hstack(
+            (self.atomic_numbers, other.atomic_numbers)
+        )
 
         self.xyz = np.vstack((self.xyz, other.xyz))
 
-    def get_covalent_bond_distances(self):
-        """Get covalent bond distances"""
+    def get_covalent_bond_lengths(self):
+        """Get covalent bond lengths
+
+        Returns the matrix of covalent bond lengths given
+        as the sum of the covalent radii of the atoms.
+
+        Returns
+        -------
+        bonds : numpy.ndarray
+            Array storing sums of covalent radii.
+            To be used to determine which atoms are bonded.
+
+        """
 
         bonds = np.zeros((self.size, self.size))
         for i, Z in enumerate(self.atomic_numbers):
             bonds[i, :] += covalent_radii[Z - 1]
             bonds[:, i] += covalent_radii[Z - 1]
 
-        bonds = bonds * 1.1
+        bonds = bonds
         return bonds
 
     def add_atom(self, atomic_number, xyz):
-        """Add atom"""
+        """Add atom
+
+        Appends an atom to the molecule
+
+        Parameters
+        ----------
+        atomic_number : int
+            Atomic number of the appended atom
+        xyz : numpy.ndarray
+            Cartesian coordinates of appended atom
+
+        Note
+        ----
+
+        Changes the instance of the molecule
+
+        """
         self.atomic_numbers = np.append(self.atomic_numbers, atomic_number)
         self.xyz = np.vstack((self.xyz, xyz))

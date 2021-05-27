@@ -10,10 +10,9 @@ from framol import WeightedGraph
 class MolecularFragmenter:
     """Molecular fragmenter class"""
 
-    def __init__(self, file_name, max_fragment_size):
+    def __init__(self, max_fragment_size, file_name, path=""):
         """Creates Molecular fragmenter"""
-        self.file_name = file_name
-        self.m = Molecule.from_xyz_file(self.file_name)
+        self.m = Molecule.from_xyz_file(path + file_name)
         self.max_fragment_size = max_fragment_size
 
     def prepare_initial_fragments(self):
@@ -26,7 +25,7 @@ class MolecularFragmenter:
 
         self.g = WeightedGraph(fragments, self.max_fragment_size)
 
-        bonds = self.m.get_covalent_bond_distances()
+        bonds = self.m.get_covalent_bond_lengths()
         distances = self.m.distances
 
         rows = np.where(distances < bonds)[0]
@@ -36,17 +35,14 @@ class MolecularFragmenter:
             if row < col:
                 self.g.add_edge(row, col, distances[row, col])
 
-    def store_fragments(self):
+    def store_fragments(self, file_prefix, path=""):
         """Store fragments"""
         for i, molecule in enumerate(self.g.vertices):
-            molecule.write(self.file_name[:-4] + "_fragment_" + str(i + 1) + ".xyz")
+            molecule.write(path + file_prefix + "_fragment_" + str(i + 1) + ".xyz")
 
     def add_H_to_capped_bonds(self):
         """Add H to capped bonds"""
 
-        # For each edge, search fragments for bonds between molecules
-        # For each bond add H at position of other atom
-        print(self.g.edges)
         for v1, v2 in self.g.edges:
 
             m1 = self.g.vertices[v1]
@@ -55,10 +51,8 @@ class MolecularFragmenter:
             distances = distance_matrix(m1.xyz, m2.xyz)
 
             bonds = np.zeros((m1.size, m2.size))
-
             for i, Z in enumerate(m1.atomic_numbers):
                 bonds[i, :] += covalent_radii[Z - 1]
-
             for i, Z in enumerate(m2.atomic_numbers):
                 bonds[:, i] += covalent_radii[Z - 1]
 
@@ -67,10 +61,8 @@ class MolecularFragmenter:
 
             for row, col in zip(rows, cols):
 
-                # unit vector along capped bond
-                r = (m2.xyz[col, :] - m1.xyz[row, :]) / distances[row, col]
+                n = (m2.xyz[col, :] - m1.xyz[row, :]) / distances[row, col]
 
-                # Compute bond length by covalent radii
                 bond_length_1 = 1.1 * (
                     covalent_radii[m1.atomic_numbers[row] - 1] + covalent_radii[0]
                 )
@@ -78,5 +70,9 @@ class MolecularFragmenter:
                     covalent_radii[m2.atomic_numbers[col] - 1] + covalent_radii[0]
                 )
 
-                m1.add_atom(1, m1.xyz[row, :] + r * bond_length_1)
-                m2.add_atom(1, m2.xyz[col, :] - r * bond_length_2)
+                m1.add_atom(1, m1.xyz[row, :] + n * bond_length_1)
+                m2.add_atom(1, m2.xyz[col, :] - n * bond_length_2)
+
+    def merge_fragments(self):
+        """Merge fragments"""
+        self.g.contract_by_smallest_weight()
