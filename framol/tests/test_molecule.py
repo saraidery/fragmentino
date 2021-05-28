@@ -7,6 +7,7 @@ from framol import Molecule
 from framol.periodic_table import number_to_symbol, symbol_to_number
 from framol import io
 
+
 class TestMolecule:
     def test_init(self):
         xyz = np.zeros((5, 3))
@@ -30,12 +31,12 @@ class TestMolecule:
 
         xyz_reference = np.array(
             [
-                [0.86681, 0.60144, 0.00000],
+                [0.86681, 0.60100, 0.00000],
                 [-0.86681, 0.60144, 0.00000],
                 [0.00000, -0.07579, 0.00000],
             ]
         )
-        atomic_numbers_reference = [1, 9, 8]
+        atomic_numbers_reference = [1, 1, 8]
 
         file_path = os.path.dirname(__file__)
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
@@ -77,12 +78,13 @@ class TestMolecule:
 
         m3 = Molecule.from_molecules(m1, m2)
 
-        xyz_reference =[[0.0000, 0.0000, 0.0000],
-                        [0.0000, 0.0000, 0.0000],
-                        [1.0000, 1.0000, 1.0000],
-                        [1.0000, 1.0000, 1.0000]]
+        xyz_reference = [
+            [0.0000, 0.0000, 0.0000],
+            [0.0000, 0.0000, 0.0000],
+            [1.0000, 1.0000, 1.0000],
+            [1.0000, 1.0000, 1.0000],
+        ]
         atomic_numbers_reference = np.array([1, 2, 1, 2])
-
 
         assert np.allclose(xyz_reference, m3.xyz)
         assert np.allclose(atomic_numbers_reference, m3.atomic_numbers)
@@ -122,9 +124,9 @@ class TestMolecule:
 
         dstances_reference = np.array(
             [
-                [0.0000000, 1.73362005, 1.10000005],
-                [1.73362005, 0.0000000, 1.10000005],
-                [1.10000005, 1.10000005, 0.0000000],
+                [0.0000000, 1.7336201, 1.09972921],
+                [1.7336201, 0.0000000, 1.10000005],
+                [1.09972921, 1.10000005, 0.0000000],
             ]
         )
 
@@ -164,12 +166,13 @@ class TestMolecule:
 
         m1.merge(m2)
 
-        xyz_reference =[[0.0000, 0.0000, 0.0000],
-                        [0.0000, 0.0000, 0.0000],
-                        [1.0000, 1.0000, 1.0000],
-                        [1.0000, 1.0000, 1.0000]]
+        xyz_reference = [
+            [0.0000, 0.0000, 0.0000],
+            [0.0000, 0.0000, 0.0000],
+            [1.0000, 1.0000, 1.0000],
+            [1.0000, 1.0000, 1.0000],
+        ]
         atomic_numbers_reference = np.array([1, 2, 1, 2])
-
 
         assert np.allclose(xyz_reference, m1.xyz)
         assert np.allclose(atomic_numbers_reference, m1.atomic_numbers)
@@ -184,8 +187,7 @@ class TestMolecule:
 
         bonds = m.get_covalent_bond_lengths()
 
-        bonds_reference = [[1.42, 1.42],
-                          [1.42, 1.42]]
+        bonds_reference = [[1.846, 1.846], [1.846, 1.846]]
 
         assert np.allclose(bonds_reference, bonds)
 
@@ -198,13 +200,14 @@ class TestMolecule:
         xyz_atom = [0.0000, 0.0000, 5.0000]
         atomic_number_atom = 2
 
-        xyz_reference =[[0.0000, 0.0000, 0.0000],
-                        [0.0000, 0.0000, 0.0000],
-                        [0.0000, 0.0000, 5.0000]]
+        xyz_reference = [
+            [0.0000, 0.0000, 0.0000],
+            [0.0000, 0.0000, 0.0000],
+            [0.0000, 0.0000, 5.0000],
+        ]
         atomic_numbers_reference = np.append(atomic_numbers, atomic_number_atom)
 
         m.add_atom(atomic_number_atom, xyz_atom)
 
         assert np.allclose(xyz_reference, m.xyz)
         assert np.allclose(atomic_numbers_reference, m.atomic_numbers)
-

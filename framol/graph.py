@@ -105,7 +105,7 @@ class WeightedGraph(SimpleWeightedGraph):
             True if contraction is possible
         """
         v1, v2 = edge
-        return (self.vertices[v1].size + self.vertices[v2].size) < self._max_vertex_size
+        return (self.vertices[v1].size + self.vertices[v2].size) <= self._max_vertex_size
 
     def _graph_contraction(self, edge_index):
         """Graph contraction

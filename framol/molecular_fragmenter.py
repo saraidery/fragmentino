@@ -28,6 +28,8 @@ class MolecularFragmenter:
         bonds = self.m.get_covalent_bond_lengths()
         distances = self.m.distances
 
+        bonds = bonds
+
         rows = np.where(distances < bonds)[0]
         cols = np.where(distances < bonds)[1]
 
@@ -51,22 +53,23 @@ class MolecularFragmenter:
             distances = distance_matrix(m1.xyz, m2.xyz)
 
             bonds = np.zeros((m1.size, m2.size))
+
             for i, Z in enumerate(m1.atomic_numbers):
                 bonds[i, :] += covalent_radii[Z - 1]
             for i, Z in enumerate(m2.atomic_numbers):
                 bonds[:, i] += covalent_radii[Z - 1]
 
-            bonds = bonds * 1.1
+            bonds = bonds
             rows, cols = np.where(distances < bonds)
 
             for row, col in zip(rows, cols):
 
                 n = (m2.xyz[col, :] - m1.xyz[row, :]) / distances[row, col]
 
-                bond_length_1 = 1.1 * (
+                bond_length_1 = (
                     covalent_radii[m1.atomic_numbers[row] - 1] + covalent_radii[0]
                 )
-                bond_length_2 = 1.1 * (
+                bond_length_2 = (
                     covalent_radii[m2.atomic_numbers[col] - 1] + covalent_radii[0]
                 )
 

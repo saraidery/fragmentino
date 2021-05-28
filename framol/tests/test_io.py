@@ -6,17 +6,17 @@ import os
 from framol import io
 
 
-class TestMolecule:
+class TestIO:
     def test_io_read(self):
 
         xyz_reference = np.array(
             [
-                [0.86681, 0.60144, 0.00000],
+                [0.86681, 0.60100, 0.00000],
                 [-0.86681, 0.60144, 0.00000],
                 [0.00000, -0.07579, 0.00000],
             ]
         )
-        symbols_reference = ["H", "F", "O"]
+        symbols_reference = ["H", "H", "O"]
 
         file_path = os.path.dirname(__file__)
         fh = io.FileHandlerXYZ(os.path.join(file_path, "small_molecule_1.xyz"))

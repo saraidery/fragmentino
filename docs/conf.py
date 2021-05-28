@@ -54,20 +54,18 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 
-html_theme_path = guzzle_sphinx_theme.html_theme_path()
-html_theme = "guzzle_sphinx_theme"
-
-# Register the theme as an extension to generate a sitemap.xml
-extensions.append("guzzle_sphinx_theme")
-
-# Guzzle theme options (see theme.conf for more information)
+html_theme = "alabaster"
 html_theme_options = {
-    # Set the name of the project to appear in the sidebar
-    "project_nav_name": "Project Name",
+	"fixed_sidebar": True,
+	"show_relbar_top": True,
+	"page_width": "auto",
+	"sidebar_width": "300px",
 }
-
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
-html_logo = "_static/images/amino_illustration_2.png"
+html_logo = "_static/images/amino_illustration.svg"
+html_css_files = [
+    'css/theme.css',
+]

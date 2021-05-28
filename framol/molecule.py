@@ -20,8 +20,8 @@ class Molecule:
         xyz : numpy array, float
             Cartesian coordinates in Angstrom
         """
-        self.xyz = np.array(xyz)
-        self.atomic_numbers = np.array(atomic_numbers)
+        self.xyz = np.atleast_2d(xyz)
+        self.atomic_numbers = np.atleast_1d(atomic_numbers)
 
     @classmethod
     def from_xyz_file(cls, file_name):
@@ -45,6 +45,7 @@ class Molecule:
     @property
     def distances(self):
         """Distances between atoms in molecule"""
+
         return distance_matrix(self.xyz, self.xyz)
 
     @property
@@ -73,9 +74,7 @@ class Molecule:
             The other molecule to merge with
 
         """
-        self.atomic_numbers = np.hstack(
-            (self.atomic_numbers, other.atomic_numbers)
-        )
+        self.atomic_numbers = np.hstack((self.atomic_numbers, other.atomic_numbers))
 
         self.xyz = np.vstack((self.xyz, other.xyz))
 
