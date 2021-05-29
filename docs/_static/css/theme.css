@@ -1,13 +1,86 @@
 * {
    	font-family: 'Fira Sans', sans-serif;
-   	font-size: 20px;
 }
-
 div.body {
 	padding-left: 40px;
+    font-family: 'Fira Sans', sans-serif;
 }
 
-div.document {
-	margin-right: 40px;
+div.body h2{
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 150%;
 }
+
+.document {
+    margin-right: 10px;
+	margin-left: 10px;
+    overflow-wrap: break-word;
+}
+
+.section {
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(230, 230, 230);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sig{
+
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.property {
+    padding-right: 5px;
+}
+
+.method {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+
+}
+
+div.sphinxsidebarwrapper {
+    padding: 40px 50px 40px 50px;
+}
+
+div.sphinxsidebar {
+	line-height: 2;
+}
+
+div.sphinxsidebar input {
+    border: 3px solid rgb(110, 110, 110);
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 15px;
+    border-radius: 15px;
+}
+
+
+div.sphinxsidebar input:focus {
+    border: 3px solid rgba(250, 0, 100, 0.4);
+    outline: none;
+    border-radius: 15px;
+    color: rgb(250, 0, 100);
+}
+
+
+div.note {
+    background-color: rgba(200, 240, 255, 0.5);
+    border-left: 5px solid rgb(200, 240, 255);
+    border-bottom: none;
+    border-top: none;
+    border-right: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+
+dl {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
 

@@ -56,10 +56,10 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "alabaster"
 html_theme_options = {
-	"fixed_sidebar": True,
-	"show_relbar_top": True,
-	"page_width": "auto",
-	"sidebar_width": "300px",
+    "fixed_sidebar": True,
+    "show_relbar_top": True,
+    "page_width": "auto",
+    "sidebar_width": "300px",
 }
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -67,5 +67,5 @@ html_theme_options = {
 html_static_path = ["_static"]
 html_logo = "_static/images/amino_illustration.svg"
 html_css_files = [
-    'css/theme.css',
+    "css/theme.css",
 ]

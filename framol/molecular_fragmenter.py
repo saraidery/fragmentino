@@ -8,74 +8,72 @@ from framol import WeightedGraph
 
 
 class MolecularFragmenter:
-    """Molecular fragmenter class"""
+    """Handles the fragmentation of a molecule:
 
-    def __init__(self, max_fragment_size, file_name, path=""):
-        """Creates Molecular fragmenter"""
-        self.m = Molecule.from_xyz_file(path + file_name)
-        self.max_fragment_size = max_fragment_size
+     - Makes a fragment for each atom. These atoms are the initial vertices of a graph
+     - The bonds between atoms are edges for the graph
+     - Contracts the graph by contracting over edges with smallest weights (shortest bonds)
+    """
 
-    def prepare_initial_fragments(self):
-        """Prepare initial fragments"""
-        fragments = []
-        for n, coord in zip(self.m.atomic_numbers, self.m.xyz):
+    def __init__(self, max_fragment_size, file_name):
+        """Creates Molecular fragmenter
 
+        Parameters
+        ----------
+        file_name : str
+           Name xyz file to read (with full or relative path).
+
+        self.m = Molecule.from_xyz_file(file_name)
+        self.g = WeightedGraph(max_fragment_size)
+        """
+
+    def fragment(self):
+        """Fragments the molecule"""
+        for n, coord in zip(self.m.Z, self.m.xyz):
             m = Molecule(n, coord)
-            fragments.append(m)
+            self.g.add_vertex(m)
 
-        self.g = WeightedGraph(fragments, self.max_fragment_size)
+        bonds = self.m.get_bonds()
+        for a1, a2, bond_length in bonds:
+            self.g.add_edge(a1, a2, bond_length)
 
-        bonds = self.m.get_covalent_bond_lengths()
-        distances = self.m.distances
+        self._merge_fragments()
 
-        bonds = bonds
+    def store_fragments(self, file_prefix):
+        """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
 
-        rows = np.where(distances < bonds)[0]
-        cols = np.where(distances < bonds)[1]
+        Parameters
+        ----------
+        file_prefix : str
+            prefix for file (with full or relative path).
 
-        for row, col in zip(rows, cols):
-            if row < col:
-                self.g.add_edge(row, col, distances[row, col])
-
-    def store_fragments(self, file_prefix, path=""):
-        """Store fragments"""
+        """
         for i, molecule in enumerate(self.g.vertices):
-            molecule.write(path + file_prefix + "_fragment_" + str(i + 1) + ".xyz")
+            molecule.write(file_prefix + "_fragment_" + str(i + 1) + ".xyz")
 
     def add_H_to_capped_bonds(self):
-        """Add H to capped bonds"""
-
+        """
+        Hydrogen is added with an apropriate bond length (given by covalent radii)
+        in a direction given by the unit vector along the capped bond.
+        """
         for v1, v2 in self.g.edges:
 
             m1 = self.g.vertices[v1]
             m2 = self.g.vertices[v2]
 
-            distances = distance_matrix(m1.xyz, m2.xyz)
+            bonds = m1.bonds_to(m2)
 
-            bonds = np.zeros((m1.size, m2.size))
+            for a1, a2, r in bonds:
 
-            for i, Z in enumerate(m1.atomic_numbers):
-                bonds[i, :] += covalent_radii[Z - 1]
-            for i, Z in enumerate(m2.atomic_numbers):
-                bonds[:, i] += covalent_radii[Z - 1]
+                length = np.linalg.norm(r)
+                n = r / length
 
-            bonds = bonds
-            rows, cols = np.where(distances < bonds)
+                bond_to_H = covalent_radii[m1.Z[a1] - 1] + covalent_radii[0]
+                m1.add_atom(1, m1.xyz[a1, :] + n * bond_to_H)
 
-            for row, col in zip(rows, cols):
+                bond_to_H = covalent_radii[m2.Z[a2] - 1] + covalent_radii[0]
+                m2.add_atom(1, m2.xyz[a2, :] - n * bond_to_H)
 
-                n = (m2.xyz[col, :] - m1.xyz[row, :]) / distances[row, col]
-
-                bond_length_1 = (
-                    covalent_radii[m1.atomic_numbers[row] - 1] + covalent_radii[0]
-                )
-                bond_length_2 = (
-                    covalent_radii[m2.atomic_numbers[col] - 1] + covalent_radii[0]
-                )
-
-                m1.add_atom(1, m1.xyz[row, :] + n * bond_length_1)
-                m2.add_atom(1, m2.xyz[col, :] - n * bond_length_2)
-
-    def merge_fragments(self):
+    def _merge_fragments(self):
         """Merge fragments"""
         self.g.contract_by_smallest_weight()

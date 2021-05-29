@@ -12,10 +12,14 @@ class SimpleWeightedGraph:
 
     """
 
-    def __init__(self, vertices):
-        self.vertices = vertices
+    def __init__(self):
+        self.vertices = []
         self.weights = []
         self.edges = []
+
+    def add_vertex(self, vertex):
+
+        self.vertices.append(vertex)
 
     def add_edge(self, v1, v2, weight):
 
@@ -40,8 +44,8 @@ class WeightedGraph(SimpleWeightedGraph):
 
     """
 
-    def __init__(self, vertices, max_vertex_size):
-        self.vertices = vertices
+    def __init__(self, max_vertex_size):
+        self.vertices = []
         self.weights = []
         self.edges = []
         self._max_vertex_size = max_vertex_size
@@ -67,7 +71,6 @@ class WeightedGraph(SimpleWeightedGraph):
         edge_index = self._determine_next_graph_contraction()
 
         while edge_index != -1:
-
             self._graph_contraction(edge_index)
             edge_index = self._determine_next_graph_contraction()
 
@@ -85,11 +88,11 @@ class WeightedGraph(SimpleWeightedGraph):
             index for next edge to contract
         """
         for edge_index, edge in enumerate(self.edges):
-            if self._can_graph_contraction(edge):
+            if self._can_contract_edge(edge):
                 return edge_index
         return -1
 
-    def _can_graph_contraction(self, edge):
+    def _can_contract_edge(self, edge):
         """Can contract edge
 
         Checks if the passed edge can be contracted
@@ -105,7 +108,9 @@ class WeightedGraph(SimpleWeightedGraph):
             True if contraction is possible
         """
         v1, v2 = edge
-        return (self.vertices[v1].size + self.vertices[v2].size) <= self._max_vertex_size
+        return (
+            self.vertices[v1].size + self.vertices[v2].size
+        ) <= self._max_vertex_size
 
     def _graph_contraction(self, edge_index):
         """Graph contraction
@@ -114,7 +119,6 @@ class WeightedGraph(SimpleWeightedGraph):
         contracts the edge.
 
         """
-
         v1, v2 = self.edges[edge_index]
 
         self._delete_edge(edge_index)
@@ -146,9 +150,13 @@ class WeightedGraph(SimpleWeightedGraph):
 
     def _remove_duplicate_edges(self):
         """Remove duplicate edges"""
-        for edge in self.edges:
 
-            occurences = (self.edges == edge).all(axis=1)
+        for v1, v2 in self.edges:
+
+            occurences1 = (self.edges == [[v1, v2]]).all(axis=1)
+            occurences2 = (self.edges == [[v2, v1]]).all(axis=1)
+            occurences = np.logical_or(occurences1, occurences2)
+
             indices = np.nonzero(occurences)[0]
 
             if indices.size > 1:

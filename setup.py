@@ -2,8 +2,7 @@ from setuptools import setup
 
 extra_requirements = {
     "tests": ["pytest", "coverage", "pytest-cov"],
-    "docs": ["sphinx", "sphinx-autodoc-typehints", "guzzle_sphinx_theme"],
-}
+    "docs": ["sphinx", "sphinx-autodoc-typehints", "sphinx-rtd-theme >= 0.4.3"],}
 
 setup(
     name="framol",
