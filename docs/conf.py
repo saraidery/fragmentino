@@ -57,7 +57,6 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 html_theme = "alabaster"
 html_theme_options = {
     "fixed_sidebar": True,
-    "show_relbar_top": True,
     "page_width": "auto",
     "sidebar_width": "300px",
 }
