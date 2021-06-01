@@ -141,7 +141,7 @@ class Molecule:
         bonds : list
             List of bonds, given as ``[atom_idx_1, atom_idx_2, bond_length]``.
         """
-        sum_covalent_radii = self.get_theoretical_covalent_bond_lengths()
+        sum_covalent_radii = self._get_theoretical_covalent_bond_lengths()
         distances = self.distances
 
         rows, cols = np.where(distances < sum_covalent_radii)

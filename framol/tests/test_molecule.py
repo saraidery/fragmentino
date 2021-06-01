@@ -177,20 +177,6 @@ class TestMolecule:
         assert np.allclose(xyz_reference, m1.xyz)
         assert np.allclose(Z_reference, m1.Z)
 
-    def test_covalent_bond(self):
-        xyz_1 = [0.0000, 0.0000, 5.0000]
-        xyz_2 = [0.0000, 0.0000, 6.2000]
-        xyz = np.vstack((xyz_1, xyz_2))
-        Z = np.array([7, 7])
-
-        m = Molecule(Z, xyz)
-
-        bonds = m.get_theoretical_covalent_bond_lengths()
-
-        bonds_reference = [[1.846, 1.846], [1.846, 1.846]]
-
-        assert np.allclose(bonds_reference, bonds)
-
     def test_add_atom(self):
         xyz = np.zeros((2, 3))
         Z = np.arange(1, 3)

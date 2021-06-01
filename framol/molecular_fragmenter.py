@@ -22,10 +22,10 @@ class MolecularFragmenter:
         ----------
         file_name : str
            Name xyz file to read (with full or relative path).
+    """
 
         self.m = Molecule.from_xyz_file(file_name)
         self.g = WeightedGraph(max_fragment_size)
-        """
 
     def fragment(self):
         """Fragments the molecule"""
@@ -50,6 +50,14 @@ class MolecularFragmenter:
         """
         for i, molecule in enumerate(self.g.vertices):
             molecule.write(file_prefix + "_fragment_" + str(i + 1) + ".xyz")
+
+    def store_full(self, file_prefix):
+        m = Molecule(self.g.vertices[0].Z, self.g.vertices[0].xyz)
+        for i, molecule in enumerate(self.g.vertices):
+            if (i > 0):
+                m.merge(molecule)
+
+        m.write(file_prefix + "_full_fragmented" + ".xyz")
 
     def add_H_to_capped_bonds(self):
         """
