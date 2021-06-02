@@ -1,6 +1,5 @@
 import numpy as np
 from copy import deepcopy
-from time import time
 
 class SimpleWeightedGraph:
     """Simple weighted graph class
