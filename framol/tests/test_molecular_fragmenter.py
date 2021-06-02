@@ -85,8 +85,8 @@ class TestFragmenter:
         f.set_center_fragment_to_first()
         central_fragment_after = f.find_center_fragment()
 
-        assert (central_fragment_before != central_fragment_after)
-        assert (central_fragment_after == 0)
+        assert central_fragment_before != central_fragment_after
+        assert central_fragment_after == 0
 
     def test_store_full(self):
 

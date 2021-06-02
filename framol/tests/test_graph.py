@@ -20,7 +20,7 @@ class TestGraph:
         g.add_edge(3, 2, 0.1)
         g.add_edge(3, 1, 0.3)
 
-        edges = [[0, 1], [0, 2], [2,3], [1,3]]
+        edges = [[0, 1], [0, 2], [2, 3], [1, 3]]
         assert np.allclose(edges, g.edges)
         weights = [0.2, 0.5, 0.1, 0.3]
         assert np.allclose(weights, g.weights)
