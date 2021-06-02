@@ -68,7 +68,7 @@ class TestFragmenter:
         f.store_fragments(os.path.join(file_path, "small_molecule_1"))
 
         m1 = Molecule.from_xyz_file(
-            os.path.join(file_path, "small_molecule_1_fragment_1.xyz")
+            os.path.join(file_path, "small_molecule_1_fragment_0.xyz")
         )
         m2 = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
