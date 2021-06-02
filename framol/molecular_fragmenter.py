@@ -49,15 +49,16 @@ class MolecularFragmenter:
 
         """
         for i, molecule in enumerate(self.g.vertices):
-            molecule.write(file_prefix + "_fragment_" + str(i + 1) + ".xyz")
+            molecule.write(file_prefix + "_fragment_" + str(i) + ".xyz")
 
     def store_full(self, file_prefix):
+
         m = Molecule(self.g.vertices[0].Z, self.g.vertices[0].xyz)
         for i, molecule in enumerate(self.g.vertices):
             if (i > 0):
                 m.merge(molecule)
 
-        m.write(file_prefix + "_full_fragmented" + ".xyz")
+        m.write(file_prefix + "_full" + ".xyz")
 
     def add_H_to_capped_bonds(self):
         """
@@ -85,3 +86,26 @@ class MolecularFragmenter:
     def _merge_fragments(self):
         """Merge fragments"""
         self.g.contract_by_smallest_weight()
+
+    def find_center_fragment(self):
+        CM = []
+        for vertex in self.g.vertices:
+            CM.append(vertex.center_of_mass)
+
+        CM = np.array(CM)
+        i = (np.linalg.norm(CM - np.mean(CM, axis=0),axis=1)).argmin()
+        return i
+
+    def print_summary(self, file_name):
+        f = open(file_name, 'w')
+
+        f.write(f'Number of fragments:    {len(self.g.vertices):10d}' + '\n')
+        f.write(f'Number of capped bonds: {len(self.g.edges):10d}' + '\n')
+        f.write(f'Centermost fragment:    {self.find_center_fragment():10d}' + '\n' + '\n')
+        f.write(f'Fragment details:' + '\n')
+        f.write(f'-----------------' + '\n')
+
+        for i, vertex in enumerate(self.g.vertices):
+            f.write(f'Fragment number: {i:10d}' + '\n')
+            f.write(str(vertex) + '\n')
+            f.write(f'-----------------' + '\n')

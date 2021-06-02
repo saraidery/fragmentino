@@ -197,3 +197,15 @@ class TestMolecule:
 
         assert np.allclose(xyz_reference, m.xyz)
         assert np.allclose(Z_reference, m.Z)
+
+    def test_center_of_mass(self):
+        """
+            Computes the center of mass based on nuclear charges
+        """
+
+        file_path = os.path.dirname(__file__)
+        m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
+
+        CM_reference = [ 0.00000000e+00, -2.80162898e-05,  0.00000000e+00]
+
+        assert np.allclose(CM_reference, m.center_of_mass)

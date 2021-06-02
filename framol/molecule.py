@@ -3,7 +3,7 @@ from scipy.spatial import distance_matrix
 
 
 from framol.io import FileHandlerXYZ
-from framol.periodic_table import number_to_symbol, symbol_to_number, covalent_radii
+from framol.periodic_table import number_to_symbol, symbol_to_number, covalent_radii, std_atomic_weight
 
 
 class Molecule:
@@ -68,6 +68,15 @@ class Molecule:
     def size(self):
         """Number of atoms in molecule"""
         return self.Z.size
+
+    @property
+    def center_of_mass(self):
+
+        atomic_weights = np.array(std_atomic_weight)[self.Z - 1]
+        weighted_xyz = self.xyz*atomic_weights[:,None]
+        CM = np.sum(weighted_xyz, axis=0)
+        CM = CM/np.sum(atomic_weights)
+        return CM
 
     def write(self, file_name):
         """Writes the molecular geometry to an xyz-file.

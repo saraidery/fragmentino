@@ -1,6 +1,6 @@
 import numpy as np
 from copy import deepcopy
-
+from time import time
 
 class SimpleWeightedGraph:
     """Simple weighted graph class
@@ -26,7 +26,14 @@ class SimpleWeightedGraph:
         if v1 >= len(self.vertices) or v2 >= len(self.vertices):
             raise ValueError("Cannot add edge between non-existing vertices")
 
-        self.edges.append([v1, v2])
+        if (v1 < v2) :
+            edge = [v1, v2]
+        elif (v1 > v2) :
+            edge = [v2, v1]
+        else :
+            raise ValueError("Cannot add edge for a single vertex")
+
+        self.edges.append(edge)
         self.weights.append(weight)
 
 
@@ -108,9 +115,8 @@ class WeightedGraph(SimpleWeightedGraph):
             True if contraction is possible
         """
         v1, v2 = edge
-        return (
-            self.vertices[v1].size + self.vertices[v2].size
-        ) <= self._max_vertex_size
+        new_v_size = self.vertices[v1].size + self.vertices[v2].size
+        return (new_v_size <= self._max_vertex_size)
 
     def _graph_contraction(self, edge_index):
         """Graph contraction
@@ -123,7 +129,6 @@ class WeightedGraph(SimpleWeightedGraph):
 
         self._delete_edge(edge_index)
         self._merge_vertices(v1, v2)
-
         self._remove_duplicate_edges()
 
     def _merge_vertices(self, v1, v2):
@@ -151,17 +156,9 @@ class WeightedGraph(SimpleWeightedGraph):
     def _remove_duplicate_edges(self):
         """Remove duplicate edges"""
 
-        for v1, v2 in self.edges:
-
-            occurences1 = (self.edges == [[v1, v2]]).all(axis=1)
-            occurences2 = (self.edges == [[v2, v1]]).all(axis=1)
-            occurences = np.logical_or(occurences1, occurences2)
-
-            indices = np.nonzero(occurences)[0]
-
-            if indices.size > 1:
-                self.edges = np.delete(self.edges, indices[1:], axis=0)
-                self.weights = np.delete(self.weights, indices[1:], axis=0)
+        self.edges, indices= np.unique(self.edges, axis=0, return_index=True)
+        self.weights = self.weights[np.array(indices)]
+        self._sort_edges_by_weight()
 
     def _update_vertex_indices_in_edges(self, v1, v2):
         """Update vertex indices in edges
@@ -188,3 +185,5 @@ class WeightedGraph(SimpleWeightedGraph):
         for edge in self.edges:
             edge[0] = _update_vertex_index(edge[0], v1, v2)
             edge[1] = _update_vertex_index(edge[1], v1, v2)
+
+        self.edges = np.sort(self.edges, axis=1)
