@@ -96,6 +96,11 @@ class MolecularFragmenter:
         i = np.linalg.norm(CM - np.mean(CM, axis=0), axis=1).argmin()
         return i
 
+    def set_center_fragment_to_first(self):
+
+        v = self.find_center_fragment()
+        self.g.vertex[0], self.g.vertex[v] = self.g.vertex[v], self.g.vertex[0]
+
     def print_summary(self, file_name):
         f = open(file_name, "w")
 
