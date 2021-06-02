@@ -183,3 +183,23 @@ class WeightedGraph(SimpleWeightedGraph):
             edge[1] = _update_vertex_index(edge[1], v1, v2)
 
         self.edges = np.sort(self.edges, axis=1)
+
+    def swap_vertices(self, v1, v2):
+        """
+        Swaps the order of two vertices
+        """
+        self.vertices[v1], self.vertices[v2] = self.vertices[v2], self.vertices[v1]
+
+        # Rules for updating vertex index (v), when vertex v1 and v2 have been merged
+        def _update_vertex_index(v, v1, v2):
+            if (v == v1):
+                v = v2
+            elif (v == v2):
+                v = v1
+            return v
+
+        for edge in self.edges:
+            edge[0] = _update_vertex_index(edge[0], v1, v2)
+            edge[1] = _update_vertex_index(edge[1], v1, v2)
+
+        self.edges = np.sort(self.edges, axis=1)

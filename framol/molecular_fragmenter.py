@@ -100,9 +100,8 @@ class MolecularFragmenter:
         i = np.linalg.norm(CM - np.mean(CM, axis=0), axis=1).argmin()
         return i
 
-    def set_center_fragment_to_first(self):
+    def swap_fragments(self, v1, v2):
         """
-        Reorder fragments so that the most central one is first.
+        Swaps the order of two fragments
         """
-        v = self.find_center_fragment()
-        self.g.vertices[0], self.g.vertices[v] = self.g.vertices[v], self.g.vertices[0]
+        self.g.swap_vertices(v1, v2)

@@ -83,8 +83,10 @@ class TestFragmenter:
         f = MolecularFragmenter(20, os.path.join(file_path, "medium_molecule_1.xyz"))
 
         f.fragment()
+
         central_fragment_before = f.find_center_fragment()
-        f.set_center_fragment_to_first()
+        f.swap_fragments(central_fragment_before, 0)
+
         central_fragment_after = f.find_center_fragment()
 
         assert central_fragment_before != central_fragment_after
