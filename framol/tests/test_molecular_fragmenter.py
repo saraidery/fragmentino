@@ -35,7 +35,7 @@ class TestFragmenter:
 
         f.fragment()
 
-        edges = [[0, 2], [2, 1]]
+        edges = [[0, 2], [1, 2]]
         assert np.allclose(edges, f.g.edges)
 
     def test_add_H(self):
