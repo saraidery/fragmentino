@@ -88,6 +88,10 @@ class MolecularFragmenter:
         self.g.contract_by_smallest_weight()
 
     def find_center_fragment(self):
+        """
+        Find central fragment by considering the center of
+        mass of each fragment
+        """
         CM = []
         for vertex in self.g.vertices:
             CM.append(vertex.center_of_mass)
@@ -97,22 +101,8 @@ class MolecularFragmenter:
         return i
 
     def set_center_fragment_to_first(self):
-
+        """
+        Reorder fragments so that the most central one is first.
+        """
         v = self.find_center_fragment()
-        self.g.vertex[0], self.g.vertex[v] = self.g.vertex[v], self.g.vertex[0]
-
-    def print_summary(self, file_name):
-        f = open(file_name, "w")
-
-        f.write(f"Number of fragments:    {len(self.g.vertices):10d}" + "\n")
-        f.write(f"Number of capped bonds: {len(self.g.edges):10d}" + "\n")
-        f.write(
-            f"Centermost fragment:    {self.find_center_fragment():10d}" + "\n" + "\n"
-        )
-        f.write(f"Fragment details:" + "\n")
-        f.write(f"-----------------" + "\n")
-
-        for i, vertex in enumerate(self.g.vertices):
-            f.write(f"Fragment number: {i:10d}" + "\n")
-            f.write(str(vertex) + "\n")
-            f.write(f"-----------------" + "\n")
+        self.g.vertices[0], self.g.vertices[v] = self.g.vertices[v], self.g.vertices[0]

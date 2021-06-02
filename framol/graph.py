@@ -136,12 +136,8 @@ class WeightedGraph(SimpleWeightedGraph):
         v1_copy = deepcopy(self.vertices[v1])
         v2_copy = deepcopy(self.vertices[v2])
 
-        if v1 > v2:
-            del self.vertices[v1]
-            del self.vertices[v2]
-        if v2 > v1:
-            del self.vertices[v2]
-            del self.vertices[v1]
+        del self.vertices[v2]
+        del self.vertices[v1]
 
         v1_copy.merge(v2_copy)
         self.vertices.append(v1_copy)

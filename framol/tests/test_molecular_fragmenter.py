@@ -74,3 +74,32 @@ class TestFragmenter:
 
         assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
         assert np.allclose(np.sort(m1.Z), np.sort(m2.Z))
+
+    def test_find_central_fragment_and_reorder(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(20, os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        f.fragment()
+        central_fragment_before = f.find_center_fragment()
+        f.set_center_fragment_to_first()
+        central_fragment_after = f.find_center_fragment()
+
+        assert (central_fragment_before != central_fragment_after)
+        assert (central_fragment_after == 0)
+
+    def test_store_full(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(30, os.path.join(file_path, "medium_molecule_1.xyz"))
+        f.fragment()
+
+        f.store_full(os.path.join(file_path, "medium_molecule_1"))
+
+        m1 = Molecule.from_xyz_file(
+            os.path.join(file_path, "medium_molecule_1_full.xyz")
+        )
+        m2 = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
+        assert np.allclose(np.sort(m1.Z), np.sort(m2.Z))
