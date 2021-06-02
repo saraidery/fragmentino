@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
-  scedule:
+  schedule:
       - cron: "0 0 * * * *"
 
 
