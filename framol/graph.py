@@ -1,6 +1,7 @@
 import numpy as np
 from copy import deepcopy
 
+
 class SimpleWeightedGraph:
     """Simple weighted graph class
 
@@ -25,11 +26,11 @@ class SimpleWeightedGraph:
         if v1 >= len(self.vertices) or v2 >= len(self.vertices):
             raise ValueError("Cannot add edge between non-existing vertices")
 
-        if (v1 < v2) :
+        if v1 < v2:
             edge = [v1, v2]
-        elif (v1 > v2) :
+        elif v1 > v2:
             edge = [v2, v1]
-        else :
+        else:
             raise ValueError("Cannot add edge for a single vertex")
 
         self.edges.append(edge)
@@ -115,7 +116,7 @@ class WeightedGraph(SimpleWeightedGraph):
         """
         v1, v2 = edge
         new_v_size = self.vertices[v1].size + self.vertices[v2].size
-        return (new_v_size <= self._max_vertex_size)
+        return new_v_size <= self._max_vertex_size
 
     def _graph_contraction(self, edge_index):
         """Graph contraction
@@ -155,7 +156,7 @@ class WeightedGraph(SimpleWeightedGraph):
     def _remove_duplicate_edges(self):
         """Remove duplicate edges"""
 
-        self.edges, indices= np.unique(self.edges, axis=0, return_index=True)
+        self.edges, indices = np.unique(self.edges, axis=0, return_index=True)
         self.weights = self.weights[np.array(indices)]
         self._sort_edges_by_weight()
 

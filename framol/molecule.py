@@ -3,7 +3,12 @@ from scipy.spatial import distance_matrix
 
 
 from framol.io import FileHandlerXYZ
-from framol.periodic_table import number_to_symbol, symbol_to_number, covalent_radii, std_atomic_weight
+from framol.periodic_table import (
+    number_to_symbol,
+    symbol_to_number,
+    covalent_radii,
+    std_atomic_weight,
+)
 
 
 class Molecule:
@@ -73,9 +78,9 @@ class Molecule:
     def center_of_mass(self):
 
         atomic_weights = np.array(std_atomic_weight)[self.Z - 1]
-        weighted_xyz = self.xyz*atomic_weights[:,None]
+        weighted_xyz = self.xyz * atomic_weights[:, None]
         CM = np.sum(weighted_xyz, axis=0)
-        CM = CM/np.sum(atomic_weights)
+        CM = CM / np.sum(atomic_weights)
         return CM
 
     def write(self, file_name):
