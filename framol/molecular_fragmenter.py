@@ -93,7 +93,7 @@ class MolecularFragmenter:
             CM.append(vertex.center_of_mass)
 
         CM = np.array(CM)
-        i = (np.linalg.norm(CM - np.mean(CM, axis=0), axis=1)).argmin()
+        i = np.linalg.norm(CM - np.mean(CM, axis=0), axis=1).argmin()
         return i
 
     def print_summary(self, file_name):
