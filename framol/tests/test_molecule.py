@@ -210,3 +210,10 @@ class TestMolecule:
         CM_reference = [0.00000, -2.80162898e-05, 0.0000]
 
         assert np.allclose(CM_reference, m.center_of_mass)
+
+    def test_print(self):
+
+        file_path = os.path.dirname(__file__)
+        m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
+
+        assert repr(m) == "Molecule 3"

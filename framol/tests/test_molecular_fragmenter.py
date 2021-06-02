@@ -84,10 +84,10 @@ class TestFragmenter:
 
         f.fragment()
 
-        central_fragment_before = f.find_center_fragment()
+        central_fragment_before = f.find_central_fragment()
         f.swap_fragments(central_fragment_before, 0)
 
-        central_fragment_after = f.find_center_fragment()
+        central_fragment_after = f.find_central_fragment()
 
         assert central_fragment_before != central_fragment_after
         assert central_fragment_after == 0

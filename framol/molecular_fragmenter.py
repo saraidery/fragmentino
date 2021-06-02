@@ -8,12 +8,7 @@ from framol import WeightedGraph
 
 
 class MolecularFragmenter:
-    """Handles the fragmentation of a molecule:
-
-    - Makes a fragment for each atom. These atoms are the initial vertices of a graph
-    - The bonds between atoms are edges for the graph
-    - Contracts the graph by contracting over edges with smallest weights (shortest bonds)
-    """
+    """Handles the fragmentation of a molecule"""
 
     def __init__(self, max_fragment_size, file_name):
         """Creates Molecular fragmenter
@@ -28,7 +23,13 @@ class MolecularFragmenter:
         self.g = WeightedGraph(max_fragment_size)
 
     def fragment(self):
-        """Fragments the molecule"""
+        r"""Fragments the molecule in an :math:`\mathcal{O}(N^2)` procedure:
+
+        - Makes a fragment for each atom. These atoms are the initial vertices of a graph
+        - The bonds between atoms are edges for the graph
+        - Contracts the graph by contracting over edges with smallest weights (shortest bonds)
+
+        """
         for n, coord in zip(self.m.Z, self.m.xyz):
             m = Molecule(n, coord)
             self.g.add_vertex(m)
@@ -87,7 +88,7 @@ class MolecularFragmenter:
         """Merge fragments"""
         self.g.contract_by_smallest_weight()
 
-    def find_center_fragment(self):
+    def find_central_fragment(self):
         """
         Find central fragment by considering the center of
         mass of each fragment
@@ -100,8 +101,15 @@ class MolecularFragmenter:
         i = np.linalg.norm(CM - np.mean(CM, axis=0), axis=1).argmin()
         return i
 
-    def swap_fragments(self, v1, v2):
+    def swap_fragments(self, f1, f2):
         """
         Swaps the order of two fragments
+
+        Parameters
+        ----------
+        f1 : int
+            Index of first fragment
+        f2 : int
+            Index of second fragment
         """
-        self.g.swap_vertices(v1, v2)
+        self.g.swap_vertices(f1, f2)

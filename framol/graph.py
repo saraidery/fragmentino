@@ -192,9 +192,9 @@ class WeightedGraph(SimpleWeightedGraph):
 
         # Rules for updating vertex index (v), when vertex v1 and v2 have been merged
         def _update_vertex_index(v, v1, v2):
-            if (v == v1):
+            if v == v1:
                 v = v2
-            elif (v == v2):
+            elif v == v2:
                 v = v1
             return v
 
