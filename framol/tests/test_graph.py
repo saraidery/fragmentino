@@ -24,3 +24,24 @@ class TestGraph:
         assert np.allclose(edges, g.edges)
         weights = [0.2, 0.5, 0.1, 0.3]
         assert np.allclose(weights, g.weights)
+
+    def test_add_illegal_edge_1(self):
+
+
+        g = SimpleWeightedGraph()
+        g.add_vertex("1")
+        g.add_vertex("2")
+
+        with pytest.raises(ValueError, match="Cannot add edge between non-existing vertices"):
+            g.add_edge(2, 0, 0.5)
+
+    def test_add_illegal_edge_2(self):
+
+
+        g = SimpleWeightedGraph()
+        g.add_vertex("1")
+        g.add_vertex("2")
+
+        with pytest.raises(ValueError, match="Cannot add edge for a single vertex"):
+            g.add_edge(0, 0, 0.5)
+
