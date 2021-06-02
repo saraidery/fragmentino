@@ -70,6 +70,8 @@ class TestFragmenter:
         m1 = Molecule.from_xyz_file(
             os.path.join(file_path, "small_molecule_1_fragment_0.xyz")
         )
+        os. remove(os.path.join(file_path, "small_molecule_1_fragment_0.xyz"))
+
         m2 = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
         assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
@@ -99,6 +101,8 @@ class TestFragmenter:
         m1 = Molecule.from_xyz_file(
             os.path.join(file_path, "medium_molecule_1_full.xyz")
         )
+        os. remove(os.path.join(file_path, "medium_molecule_1_full.xyz"))
+
         m2 = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
 
         assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
