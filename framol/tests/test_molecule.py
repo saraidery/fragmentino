@@ -107,6 +107,7 @@ class TestMolecule:
 
         assert np.allclose(xyz_reference, xyz)
         assert np.allclose(Z_reference, Z)
+        os.remove(os.path.join(file_path, "small_molecule_2.xyz"))
 
     def test_size(self):
         xyz = np.zeros((5, 3))
