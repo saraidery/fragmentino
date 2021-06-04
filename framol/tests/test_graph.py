@@ -27,16 +27,16 @@ class TestGraph:
 
     def test_add_illegal_edge_1(self):
 
-
         g = SimpleWeightedGraph()
         g.add_vertex("1")
         g.add_vertex("2")
 
-        with pytest.raises(ValueError, match="Cannot add edge between non-existing vertices"):
+        with pytest.raises(
+            ValueError, match="Cannot add edge between non-existing vertices"
+        ):
             g.add_edge(2, 0, 0.5)
 
     def test_add_illegal_edge_2(self):
-
 
         g = SimpleWeightedGraph()
         g.add_vertex("1")
@@ -57,7 +57,7 @@ class TestGraph:
         g.add_edge(3, 2, 0.1)
         g.add_edge(3, 1, 0.3)
 
-        assert (g.n_vertices == 4)
+        assert g.n_vertices == 4
 
     def test_n_edges(self):
         g = SimpleWeightedGraph()
@@ -70,7 +70,7 @@ class TestGraph:
         g.add_edge(2, 0, 0.5)
         g.add_edge(3, 2, 0.1)
 
-        assert (g.n_edges == 3)
+        assert g.n_edges == 3
 
     def test_size(self):
         g = SimpleWeightedGraph()
@@ -84,5 +84,4 @@ class TestGraph:
         g.add_edge(3, 2, 0.1)
         g.add_edge(3, 1, 0.3)
 
-        assert (g.size == 4)
-
+        assert g.size == 4

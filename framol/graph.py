@@ -48,6 +48,7 @@ class SimpleWeightedGraph:
     def size(self):
         return self.n_edges
 
+
 class WeightedGraph(SimpleWeightedGraph):
     """Weighted graph class
 

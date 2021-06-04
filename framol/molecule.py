@@ -202,10 +202,7 @@ class Molecule:
 
         equal_size = True
 
-        if (self.size != other.size):
+        if self.size != other.size:
             equal_size = False
 
         return equal_size
-
-
-

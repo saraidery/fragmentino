@@ -120,8 +120,7 @@ class TestFragmenter:
         f.group_fragments_by_size()
         fragment_size_after = f.size[1]
 
-        before_reference = [ 4, 10,  9, 10]
-        after_reference = [ 4, 10, 10,  9]
+        before_reference = [4, 10, 9, 10]
+        after_reference = [4, 10, 10, 9]
         assert np.allclose(fragment_size_before, before_reference)
         assert np.allclose(fragment_size_after, after_reference)
-

@@ -124,7 +124,6 @@ class MolecularFragmenter:
     def group_fragments_by_size(self):
         for i, vertexi in enumerate(self.g.vertices):
             for j, vertexj in enumerate(self.g.vertices):
-                if (j > i):
-                    if (vertexi.same_size(vertexj)):
-                        self.swap_fragments(i+1,j)
-
+                if j > i:
+                    if vertexi.same_size(vertexj):
+                        self.swap_fragments(i + 1, j)

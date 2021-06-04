@@ -71,6 +71,7 @@ class FileHandlerXYZ:
             comments="",
         )
 
+
 def _remove_zero_width_whitespace(string):
 
     """Remove non-zero whitespaces"""
