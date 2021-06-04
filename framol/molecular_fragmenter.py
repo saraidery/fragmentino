@@ -127,3 +127,4 @@ class MolecularFragmenter:
                 if (j > i):
                     if (vertexi.same_size(vertexj)):
                         self.swap_fragments(i+1,j)
+

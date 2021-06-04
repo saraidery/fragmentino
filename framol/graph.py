@@ -42,11 +42,11 @@ class SimpleWeightedGraph:
 
     @property
     def n_edges(self):
-        return self.edges.shape[0]
+        return len(self.edges)
 
     @property
     def size(self):
-        return n_edges
+        return self.n_edges
 
 class WeightedGraph(SimpleWeightedGraph):
     """Weighted graph class

@@ -45,3 +45,44 @@ class TestGraph:
         with pytest.raises(ValueError, match="Cannot add edge for a single vertex"):
             g.add_edge(0, 0, 0.5)
 
+    def test_n_vertices(self):
+        g = SimpleWeightedGraph()
+        g.add_vertex("1")
+        g.add_vertex("2")
+        g.add_vertex("3")
+        g.add_vertex("4")
+
+        g.add_edge(0, 1, 0.2)
+        g.add_edge(2, 0, 0.5)
+        g.add_edge(3, 2, 0.1)
+        g.add_edge(3, 1, 0.3)
+
+        assert (g.n_vertices == 4)
+
+    def test_n_edges(self):
+        g = SimpleWeightedGraph()
+        g.add_vertex("1")
+        g.add_vertex("2")
+        g.add_vertex("3")
+        g.add_vertex("4")
+
+        g.add_edge(0, 1, 0.2)
+        g.add_edge(2, 0, 0.5)
+        g.add_edge(3, 2, 0.1)
+
+        assert (g.n_edges == 3)
+
+    def test_size(self):
+        g = SimpleWeightedGraph()
+        g.add_vertex("1")
+        g.add_vertex("2")
+        g.add_vertex("3")
+        g.add_vertex("4")
+
+        g.add_edge(0, 1, 0.2)
+        g.add_edge(2, 0, 0.5)
+        g.add_edge(3, 2, 0.1)
+        g.add_edge(3, 1, 0.3)
+
+        assert (g.size == 4)
+

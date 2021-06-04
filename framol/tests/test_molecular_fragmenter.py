@@ -109,3 +109,19 @@ class TestFragmenter:
 
         assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
         assert np.allclose(np.sort(m1.Z), np.sort(m2.Z))
+
+    def test_group_fragments(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+        f.fragment()
+
+        size, fragment_size_before = f.size
+        f.group_fragments_by_size()
+        fragment_size_after = f.size[1]
+
+        before_reference = [ 4, 10,  9, 10]
+        after_reference = [ 4, 10, 10,  9]
+        assert np.allclose(fragment_size_before, before_reference)
+        assert np.allclose(fragment_size_after, after_reference)
+
