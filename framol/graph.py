@@ -36,6 +36,17 @@ class SimpleWeightedGraph:
         self.edges.append(edge)
         self.weights.append(weight)
 
+    @property
+    def n_vertices(self):
+        return len(self.vertices)
+
+    @property
+    def n_edges(self):
+        return self.edges.shape[0]
+
+    @property
+    def size(self):
+        return n_edges
 
 class WeightedGraph(SimpleWeightedGraph):
     """Weighted graph class
