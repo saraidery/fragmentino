@@ -61,10 +61,7 @@ class TestGraph:
 
     def test_n_edges(self):
         g = SimpleWeightedGraph()
-        g.add_vertex("1")
-        g.add_vertex("2")
-        g.add_vertex("3")
-        g.add_vertex("4")
+        g.add_vertices(["1", "2", "3", "4"])
 
         g.add_edge(0, 1, 0.2)
         g.add_edge(2, 0, 0.5)

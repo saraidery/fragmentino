@@ -199,10 +199,4 @@ class Molecule:
         return bonds
 
     def same_size(self, other):
-
-        equal_size = True
-
-        if self.size != other.size:
-            equal_size = False
-
-        return equal_size
+        return self.size == other.size

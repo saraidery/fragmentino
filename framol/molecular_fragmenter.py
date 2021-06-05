@@ -42,10 +42,14 @@ class MolecularFragmenter:
 
     @property
     def size(self):
+        return self.m.size
+
+    @property
+    def fragment_sizes(self):
         fragment_sizes = np.zeros(self.g.n_vertices, dtype=int)
         for i, fragment in enumerate(self.g.vertices):
             fragment_sizes[i] = fragment.size
-        return self.m.size, fragment_sizes
+        return fragment_sizes
 
     def store_fragments(self, file_prefix):
         """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
@@ -122,8 +126,14 @@ class MolecularFragmenter:
         self.g.swap_vertices(f1, f2)
 
     def group_fragments_by_size(self):
-        for i, vertexi in enumerate(self.g.vertices):
-            for j, vertexj in enumerate(self.g.vertices):
-                if j > i:
-                    if vertexi.same_size(vertexj):
+        """Groups fragments such that fragments of the same size follow each other
+
+        Warning
+        -------
+        This should not be done before the molecule has been fragmented, since initially all fragments are of size 1
+        and this process is :math:`\mathcal{O}(N^2)` scaling.
+        """
+        for i, vertex_i in enumerate(self.g.vertices):
+            for j, vertex_j in enumerate(self.g.vertices):
+                if j > i and vertex_i.same_size(vertex_j):
                         self.swap_fragments(i + 1, j)
