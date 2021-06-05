@@ -18,11 +18,12 @@ class SimpleWeightedGraph:
         self.edges = []
 
     def add_vertex(self, vertex):
-
         self.vertices.append(vertex)
 
-    def add_edge(self, v1, v2, weight):
+    def add_vertices(self, vertex_list):
+        self.vertices.extend(vertex_list)
 
+    def add_edge(self, v1, v2, weight):
         if v1 >= len(self.vertices) or v2 >= len(self.vertices):
             raise ValueError("Cannot add edge between non-existing vertices")
 
@@ -35,6 +36,18 @@ class SimpleWeightedGraph:
 
         self.edges.append(edge)
         self.weights.append(weight)
+
+    @property
+    def n_vertices(self):
+        return len(self.vertices)
+
+    @property
+    def n_edges(self):
+        return len(self.edges)
+
+    @property
+    def size(self):
+        return self.n_edges
 
 
 class WeightedGraph(SimpleWeightedGraph):

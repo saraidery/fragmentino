@@ -197,3 +197,6 @@ class Molecule:
             bonds.append([row, col, r])
 
         return bonds
+
+    def same_size(self, other):
+        return self.size == other.size

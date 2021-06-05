@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 
 class FileHandlerXYZ:
@@ -23,8 +24,7 @@ class FileHandlerXYZ:
         file_name : str
             The name of the file, includng full or relative path.
         """
-
-        self.file_name = file_name
+        self.file_name = os.path.expanduser(file_name)
 
     def read(self):
 
