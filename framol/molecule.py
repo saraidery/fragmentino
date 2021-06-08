@@ -231,7 +231,8 @@ class Molecule:
             ),
             margin=dict(l=0, r=0, t=0, b=0),
         )
-        fig.show()
+
+        return fig
 
     def get_bonds_plot(self, color=None, label='bonds'):
 

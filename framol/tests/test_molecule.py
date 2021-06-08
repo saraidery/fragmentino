@@ -217,3 +217,11 @@ class TestMolecule:
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
         assert repr(m) == "Molecule 3"
+
+
+    def test_plot_show(self):
+
+        file_path = os.path.dirname(__file__)
+        m = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        m.plot()
