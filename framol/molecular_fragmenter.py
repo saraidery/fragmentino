@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.spatial import distance_matrix
+import plotly.graph_objects as go
+import random
 
 
 from framol.molecule import Molecule
@@ -89,10 +91,10 @@ class MolecularFragmenter:
                 length = np.linalg.norm(r)
                 n = r / length
 
-                bond_to_H = covalent_radii[m1.Z[a1] - 1] + covalent_radii[0]
+                bond_to_H = (covalent_radii[m1.Z[a1] - 1] + covalent_radii[0])*m1.bond_factor
                 m1.add_atom(1, m1.xyz[a1, :] + n * bond_to_H)
 
-                bond_to_H = covalent_radii[m2.Z[a2] - 1] + covalent_radii[0]
+                bond_to_H = (covalent_radii[m2.Z[a2] - 1] + covalent_radii[0])*m2.bond_factor
                 m2.add_atom(1, m2.xyz[a2, :] - n * bond_to_H)
 
     def _merge_fragments(self):
@@ -126,7 +128,7 @@ class MolecularFragmenter:
         self.g.swap_vertices(f1, f2)
 
     def group_fragments_by_size(self):
-        """Groups fragments such that fragments of the same size follow each other
+        r"""Groups fragments such that fragments of the same size follow each other
 
         Warning
         -------
@@ -137,3 +139,42 @@ class MolecularFragmenter:
             for j, vertex_j in enumerate(self.g.vertices):
                 if j > i and vertex_i.same_size(vertex_j):
                     self.swap_fragments(i + 1, j)
+
+    def plot_fragments(self, colors="by atom"):
+        plots = []
+
+        for i, molecule in enumerate(self.g.vertices):
+
+            if (colors == "random"):
+                color = "#%06x" % random.randint(i, 0xFFFFFF)
+            elif (colors == "by atom"):
+                color = None
+            else :
+                raise ValueError("Did not recognize the color scheme!")
+            plots.append(molecule.get_atoms_plot(color))
+            plots.append(molecule.get_bonds_plot(color))
+
+        fig = go.Figure(data=plots)
+
+        fig.update_layout(
+        showlegend=False,
+        scene=dict(
+            xaxis_title="",
+            yaxis_title="",
+            zaxis_title="",
+            xaxis=dict(
+                showbackground=False,
+                tickvals=[],
+            ),
+            yaxis=dict(
+                showbackground=False,
+                tickvals=[],
+            ),
+            zaxis=dict(
+                showbackground=False,
+                tickvals=[],
+            ),
+        ),
+        margin=dict(l=0, r=0, t=0, b=0),
+        )
+        fig.show()

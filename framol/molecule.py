@@ -14,7 +14,7 @@ from framol.periodic_table import (
 
 
 class Molecule:
-    def __init__(self, Z, xyz):
+    def __init__(self, Z, xyz, bond_factor=1.3):
         """Creates a molecule
 
         Parameters
@@ -27,6 +27,7 @@ class Molecule:
         """
         self.xyz = np.atleast_2d(xyz)
         self.Z = np.atleast_1d(Z)
+        self.bond_factor=bond_factor
 
     @classmethod
     def from_xyz_file(cls, file_name):
@@ -60,7 +61,6 @@ class Molecule:
 
         Z = np.hstack((m1.Z, m2.Z))
         xyz = np.vstack((m1.xyz, m2.xyz))
-
         return cls(Z, xyz)
 
     def __repr__(self):
@@ -107,7 +107,6 @@ class Molecule:
 
         """
         self.Z = np.hstack((self.Z, other.Z))
-
         self.xyz = np.vstack((self.xyz, other.xyz))
 
     def _get_theoretical_covalent_bond_lengths(self):
@@ -124,8 +123,8 @@ class Molecule:
 
         bonds = np.zeros((self.size, self.size))
         for i, Z in enumerate(self.Z):
-            bonds[i, :] += covalent_radii[Z - 1]
-            bonds[:, i] += covalent_radii[Z - 1]
+            bonds[i, :] += covalent_radii[Z - 1]*self.bond_factor
+            bonds[:, i] += covalent_radii[Z - 1]*self.bond_factor
 
         bonds = bonds
         return bonds
@@ -187,9 +186,9 @@ class Molecule:
 
         sum_covalent_radii = np.zeros((self.size, other.size))
         for i, Z in enumerate(self.Z):
-            sum_covalent_radii[i, :] += covalent_radii[Z - 1]
+            sum_covalent_radii[i, :] += covalent_radii[Z - 1]*self.bond_factor
         for i, Z in enumerate(other.Z):
-            sum_covalent_radii[:, i] += covalent_radii[Z - 1]
+            sum_covalent_radii[:, i] += covalent_radii[Z - 1]*self.bond_factor
 
         rows, cols = np.where(distances < sum_covalent_radii)
 
@@ -204,7 +203,7 @@ class Molecule:
     def same_size(self, other):
         return self.size == other.size
 
-    def plot_molecule(self, color=None):
+    def plot(self, color=None):
 
         atom_bonds = self.get_bonds_plot()
         atoms = self.get_atoms_plot()
@@ -234,7 +233,7 @@ class Molecule:
         )
         fig.show()
 
-    def get_bonds_plot(self, color=None):
+    def get_bonds_plot(self, color=None, label='bonds'):
 
         if (color == None):
             bond_color = "black"
@@ -262,7 +261,7 @@ class Molecule:
             x=x_lines,
             y=y_lines,
             z=z_lines,
-            name="bond",
+            name=label,
             mode="lines",
             line=dict(color=bond_color, width=10),
         )
@@ -270,10 +269,9 @@ class Molecule:
         return atom_bonds
 
 
-    def get_atoms_plot(self, color=None):
+    def get_atoms_plot(self, color=None, label='atom'):
 
-        # Marker size and color
-        sizes = 25 * covalent_radii[self.Z - 1]
+        sizes = 25 * covalent_radii[self.Z - 1]*self.bond_factor
 
         if (color == None):
             colors = []
@@ -282,7 +280,6 @@ class Molecule:
         else:
             colors = color
 
-        # Prepare atoms -> separate out
         x = np.transpose(self.xyz[:,0])
         y = np.transpose(self.xyz[:,1])
         z = np.transpose(self.xyz[:,2])
@@ -292,7 +289,7 @@ class Molecule:
             y=y,
             z=z,
             mode="markers",
-            name="atom",
+            name=label,
             marker=dict(
                 size=sizes,
                 color=colors,
