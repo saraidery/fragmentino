@@ -136,4 +136,4 @@ class MolecularFragmenter:
         for i, vertex_i in enumerate(self.g.vertices):
             for j, vertex_j in enumerate(self.g.vertices):
                 if j > i and vertex_i.same_size(vertex_j):
-                        self.swap_fragments(i + 1, j)
+                    self.swap_fragments(i + 1, j)

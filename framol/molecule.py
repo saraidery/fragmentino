@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial import distance_matrix
+import plotly.graph_objects as go
 
 
 from framol.io import FileHandlerXYZ
@@ -8,6 +9,7 @@ from framol.periodic_table import (
     symbol_to_number,
     covalent_radii,
     std_atomic_weight,
+    atom_color,
 )
 
 
@@ -164,6 +166,7 @@ class Molecule:
         for row, col in zip(rows, cols):
             if row < col:
                 bonds.append([row, col, distances[row, col]])
+
         return bonds
 
     def bonds_to(self, other):
@@ -200,3 +203,101 @@ class Molecule:
 
     def same_size(self, other):
         return self.size == other.size
+
+    def plot_molecule(self, color=None):
+
+        atom_bonds = self.get_bonds_plot()
+        atoms = self.get_atoms_plot()
+
+        fig = go.Figure(data=[atom_bonds, atoms])
+
+        fig.update_layout(
+            showlegend=False,
+            scene=dict(
+                xaxis_title="",
+                yaxis_title="",
+                zaxis_title="",
+                xaxis=dict(
+                    showbackground=False,
+                    tickvals=[],
+                ),
+                yaxis=dict(
+                    showbackground=False,
+                    tickvals=[],
+                ),
+                zaxis=dict(
+                    showbackground=False,
+                    tickvals=[],
+                ),
+            ),
+            margin=dict(l=0, r=0, t=0, b=0),
+        )
+        fig.show()
+
+    def get_bonds_plot(self, color=None):
+
+        if (color == None):
+            bond_color = "black"
+        else:
+            bond_color = color
+
+        bonds = self.get_bonds()
+        x_lines = []
+        y_lines = []
+        z_lines = []
+
+        # create bonds
+        for bond in bonds:
+            x_lines.append(self.xyz[bond[0], 0])
+            x_lines.append(self.xyz[bond[1], 0])
+            x_lines.append(None)
+            y_lines.append(self.xyz[bond[0], 1])
+            y_lines.append(self.xyz[bond[1], 1])
+            y_lines.append(None)
+            z_lines.append(self.xyz[bond[0], 2])
+            z_lines.append(self.xyz[bond[1], 2])
+            z_lines.append(None)
+
+        atom_bonds = go.Scatter3d(
+            x=x_lines,
+            y=y_lines,
+            z=z_lines,
+            name="bond",
+            mode="lines",
+            line=dict(color=bond_color, width=10),
+        )
+
+        return atom_bonds
+
+
+    def get_atoms_plot(self, color=None):
+
+        # Marker size and color
+        sizes = 25 * covalent_radii[self.Z - 1]
+
+        if (color == None):
+            colors = []
+            for Z in self.Z:
+                colors.append(atom_color[Z - 1])
+        else:
+            colors = color
+
+        # Prepare atoms -> separate out
+        x = np.transpose(self.xyz[:,0])
+        y = np.transpose(self.xyz[:,1])
+        z = np.transpose(self.xyz[:,2])
+
+        atoms = go.Scatter3d(
+            x=x,
+            y=y,
+            z=z,
+            mode="markers",
+            name="atom",
+            marker=dict(
+                size=sizes,
+                color=colors,
+                opacity=1,
+            ),
+        )
+
+        return atoms
