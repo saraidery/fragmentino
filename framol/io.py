@@ -24,7 +24,7 @@ class FileHandlerXYZ:
         file_name : str
             The name of the file, includng full or relative path.
         """
-        self.file_name = os.path.expanduser(file_name)
+        self.file_name = os.path.expanduser(file_name.strip())
 
     def read(self):
 
