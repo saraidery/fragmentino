@@ -203,7 +203,7 @@ class WeightedGraph(SimpleWeightedGraph):
         """
         self.vertices[v1], self.vertices[v2] = self.vertices[v2], self.vertices[v1]
 
-        # Rules for updating vertex index (v), when vertex v1 and v2 have been merged
+        # Rules for updating vertex index (v), when vertex v1 and v2 have been swapped
         def _update_vertex_index(v, v1, v2):
             if v == v1:
                 v = v2

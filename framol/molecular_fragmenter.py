@@ -136,7 +136,6 @@ class MolecularFragmenter:
 
     def group_fragments_by_size(self):
         r"""Groups fragments such that fragments of the same size follow each other
-
         Warning
         -------
         This should not be done before the molecule has been fragmented, since initially all fragments are of size 1
