@@ -17,9 +17,6 @@
 
 # -- Project information -----------------------------------------------------
 
-import guzzle_sphinx_theme
-
-
 project = "framol"
 copyright = "2021, Sarai D. Folkestad"
 author = "Sarai D. Folkestad"
@@ -38,6 +35,14 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
 ]
+
+# Create links to references within kikuchipy's documentation to these packages.
+intersphinx_mapping = {
+    "numpy": ("https://docs.scipy.org/doc/numpy", None),
+    "plotly": ("https://plotly.com/python-api-reference", None),
+    "python": ("https://docs.python.org/3", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -66,6 +71,7 @@ html_theme = "furo"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 html_logo = "_static/images/amino_illustration.svg"
+html_favicon = "_static/images/favicon.png"
 # html_css_files = [
 #    "css/theme.css",
 # ]

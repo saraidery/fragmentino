@@ -5,7 +5,7 @@ import os
 
 from framol import MolecularFragmenter
 from framol import Molecule
-from framol.visualization_tools import VisualizationTool
+from framol.visualization_tools import Figure
 
 
 class TestFragmenter:
@@ -15,8 +15,6 @@ class TestFragmenter:
         f = MolecularFragmenter(25, os.path.join(file_path, "small_molecule_1.xyz"))
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
-        f.fragment()
-
         assert np.allclose(np.sort(m.xyz, axis=0), np.sort(f.g.vertices[0].xyz, axis=0))
         assert np.allclose(np.sort(m.Z), np.sort(f.g.vertices[0].Z))
 
@@ -25,16 +23,12 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(30, os.path.join(file_path, "medium_molecule_1.xyz"))
 
-        f.fragment()
-
         assert np.allclose([[0, 1]], f.g.edges[0])
 
     def test_merge_fragments_3(self):
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "small_molecule_4.xyz"))
-
-        f.fragment()
 
         edges = [[0, 2], [1, 2]]
         assert np.allclose(edges, f.g.edges)
@@ -43,8 +37,6 @@ class TestFragmenter:
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(2, os.path.join(file_path, "small_molecule_1.xyz"))
-
-        f.fragment()
 
         f.add_H_to_capped_bonds()
 
@@ -64,7 +56,6 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
 
         f = MolecularFragmenter(10, os.path.join(file_path, "small_molecule_1.xyz"))
-        f.fragment()
 
         f.store_fragments(os.path.join(file_path, "small_molecule_1"))
 
@@ -83,8 +74,6 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(20, os.path.join(file_path, "medium_molecule_1.xyz"))
 
-        f.fragment()
-
         central_fragment_before = f.find_central_fragment()
         f.swap_fragments(central_fragment_before, 0)
 
@@ -97,7 +86,6 @@ class TestFragmenter:
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(30, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
 
         f.store_full(os.path.join(file_path, "medium_molecule_1"))
 
@@ -115,44 +103,51 @@ class TestFragmenter:
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
 
-        fragment_size_before = f.fragment_sizes
+        sizes_before = f.fragment_sizes
         f.group_fragments_by_size()
-        fragment_size_after = f.fragment_sizes
+        sizes_after = f.fragment_sizes
 
         before_reference = [4, 10, 9, 10]
         after_reference = [4, 10, 10, 9]
-        assert np.allclose(fragment_size_before, before_reference)
-        assert np.allclose(fragment_size_after, after_reference)
+        assert np.allclose(sizes_before, before_reference)
+        assert np.allclose(sizes_after, after_reference)
 
     def test_size(self):
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
         assert f.size == 33
 
-    def test_plot(self, monkeypatch):
-        def mockreturn(v, fig):
-            return None
-
-        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+    def test_n_fragments(self):
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
+        assert f.n_fragments == 4
 
+    def test_n_capped_bonds(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+        assert f.n_capped_bonds == 3
+
+    def test_plot(self, monkeypatch):
+        def mockreturn(v):
+            return None
+
+        monkeypatch.setattr(Figure, "show_figure", mockreturn)
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
         f.plot_fragments()
 
     def test_plot_with_color(self, monkeypatch):
-        def mockreturn(v, fig):
+        def mockreturn(v):
             return None
 
-        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+        monkeypatch.setattr(Figure, "show_figure", mockreturn)
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
 
         f.plot_fragments("random")

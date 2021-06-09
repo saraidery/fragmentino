@@ -81,6 +81,7 @@ def Z_to_atomic_weight(Z):
 
     return std_atomic_weight[Z - 1]
 
+
 def Z_to_color(Z):
 
     return atom_color[Z - 1]

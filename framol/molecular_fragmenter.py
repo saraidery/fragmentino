@@ -7,8 +7,7 @@ import random
 from framol.molecule import Molecule
 from framol.periodic_table import Z_to_bond_length
 from framol import WeightedGraph
-from framol.visualization_tools import VisualizationTool
-
+from framol.visualization_tools import Figure
 
 class MolecularFragmenter:
     """Handles the fragmentation of a molecule"""
@@ -24,8 +23,9 @@ class MolecularFragmenter:
 
         self.m = Molecule.from_xyz_file(file_name)
         self.g = WeightedGraph(max_fragment_size)
+        self._fragment()
 
-    def fragment(self):
+    def _fragment(self):
         r"""Fragments the molecule in an :math:`\mathcal{O}(N^2)` procedure:
 
         - Makes a fragment for each atom. These atoms are the initial vertices of a graph
@@ -53,6 +53,14 @@ class MolecularFragmenter:
         for i, fragment in enumerate(self.g.vertices):
             fragment_sizes[i] = fragment.size
         return fragment_sizes
+
+    @property
+    def n_fragments(self):
+        return self.g.n_vertices
+
+    @property
+    def n_capped_bonds(self):
+        return self.g.n_edges
 
     def store_fragments(self, file_prefix):
         """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
@@ -138,8 +146,7 @@ class MolecularFragmenter:
         r"""Groups fragments such that fragments of the same size follow each other
         Warning
         -------
-        This should not be done before the molecule has been fragmented, since initially all fragments are of size 1
-        and this process is :math:`\mathcal{O}(N^2)` scaling.
+        This process is :math:`\mathcal{O}(N^2)` scaling.
         """
         for i, vertex_i in enumerate(self.g.vertices):
             for j, vertex_j in enumerate(self.g.vertices):
@@ -159,8 +166,6 @@ class MolecularFragmenter:
             plots.append(molecule.get_atom_plot_data(color))
             plots.append(molecule.get_bond_plot_data(color))
 
-        fig = go.Figure(data=plots)
-
-        v = VisualizationTool()
-        v.update_figure_layout(fig)
-        v.show_figure(fig)
+        v = Figure(data=plots)
+        v.update_figure_layout()
+        v.show_figure()

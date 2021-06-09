@@ -11,11 +11,6 @@ framol
    :caption: Contents:
 
    reference.rst
+   user_guide.rst
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
