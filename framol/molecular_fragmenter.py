@@ -5,7 +5,7 @@ import random
 
 
 from framol.molecule import Molecule
-from framol.periodic_table import covalent_radii
+from framol.periodic_table import Z_to_bond_length
 from framol import WeightedGraph
 from framol.visualization_tools import VisualizationTool
 
@@ -64,7 +64,7 @@ class MolecularFragmenter:
 
         """
         for i, molecule in enumerate(self.g.vertices):
-            molecule.write(file_prefix + "_fragment_" + str(i) + ".xyz")
+            molecule.write_xyz(file_prefix + "_fragment_" + str(i) + ".xyz")
 
     def store_full(self, file_prefix):
 
@@ -73,30 +73,35 @@ class MolecularFragmenter:
             if i > 0:
                 m.merge(molecule)
 
-        m.write(file_prefix + "_full" + ".xyz")
+        m.write_xyz(file_prefix + "_full" + ".xyz")
 
     def add_H_to_capped_bonds(self):
         """
         Hydrogen is added with an apropriate bond length (given by covalent radii)
         in a direction given by the unit vector along the capped bond.
         """
+        Z_H = 1
         for v1, v2 in self.g.edges:
 
             m1 = self.g.vertices[v1]
             m2 = self.g.vertices[v2]
 
             bonds = m1.bonds_to(m2)
-
             for a1, a2, r in bonds:
 
-                length = np.linalg.norm(r)
-                n = r / length
+                # unit vector along bond
+                n = r / (np.linalg.norm(r))
+                print(n)
 
-                bond_to_H = (covalent_radii[m1.Z[a1] - 1] + covalent_radii[0])*m1.bond_factor
-                m1.add_atom(1, m1.xyz[a1, :] + n * bond_to_H)
+                print(m1.xyz[a1, :])
+                # add H to m1
+                length = Z_to_bond_length(m1.Z[a1], Z_H, m1.bond_factor)
+                print(length)
+                m1.add_atom(Z_H, m1.xyz[a1, :] + n * length)
 
-                bond_to_H = (covalent_radii[m2.Z[a2] - 1] + covalent_radii[0])*m2.bond_factor
-                m2.add_atom(1, m2.xyz[a2, :] - n * bond_to_H)
+                # add H to m2
+                length = Z_to_bond_length(m2.Z[a2], Z_H, m2.bond_factor)
+                m2.add_atom(Z_H, m2.xyz[a2, :] - n * length)
 
     def _merge_fragments(self):
         """Merge fragments"""
@@ -113,6 +118,7 @@ class MolecularFragmenter:
 
         CM = np.array(CM)
         i = np.linalg.norm(CM - np.mean(CM, axis=0), axis=1).argmin()
+
         return i
 
     def swap_fragments(self, f1, f2):
@@ -144,15 +150,15 @@ class MolecularFragmenter:
     def plot_fragments(self, colors="by atom"):
         plots = []
 
-        for i, molecule in enumerate(self.g.vertices):
+        for molecule in self.g.vertices:
 
-            if (colors == "random"):
-                color = "#%06x" % random.randint(i, 0xFFFFFF)
-            elif (colors == "by atom"):
+            if colors == "random":
+                color = "#%06x" % random.randint(0, 0xFFFFFF)
+            elif colors == "by atom":
                 color = None
 
-            plots.append(molecule.get_atoms_plot(color))
-            plots.append(molecule.get_bonds_plot(color))
+            plots.append(molecule.get_atom_plot_data(color))
+            plots.append(molecule.get_bond_plot_data(color))
 
         fig = go.Figure(data=plots)
 

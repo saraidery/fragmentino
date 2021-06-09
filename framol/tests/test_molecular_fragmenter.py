@@ -7,6 +7,7 @@ from framol import MolecularFragmenter
 from framol import Molecule
 from framol.visualization_tools import VisualizationTool
 
+
 class TestFragmenter:
     def test_fragmentation(self):
 
@@ -133,7 +134,6 @@ class TestFragmenter:
         assert f.size == 33
 
     def test_plot(self, monkeypatch):
-
         def mockreturn(v, fig):
             return None
 
@@ -146,7 +146,6 @@ class TestFragmenter:
         f.plot_fragments()
 
     def test_plot_with_color(self, monkeypatch):
-
         def mockreturn(v, fig):
             return None
 

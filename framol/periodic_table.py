@@ -156,16 +156,36 @@ atom_color = [
 ]
 
 
-def number_to_symbol(number):
-    return _periodic_table[number - 1]
+def Z_to_symbol(Z):
+    return _periodic_table[Z - 1]
 
 
-def symbol_to_number(symbol):
-
+def symbol_to_Z(symbol):
     n_elements = len(_periodic_table)
     periodic_table_dict = dict(
         zip(_periodic_table, np.arange(1, n_elements, dtype=int))
     )
-    number = periodic_table_dict[symbol]
+    Z = periodic_table_dict[symbol]
 
-    return number
+    return Z
+
+
+def Z_to_bond_length(Z1, Z2, scaling_factor):
+
+    bond_length = (covalent_radii[Z1 - 1] + covalent_radii[Z2 - 1]) * scaling_factor
+
+    return bond_length
+
+
+def Z_to_covalent_radius(Z):
+
+    return covalent_radii[Z - 1]
+
+
+def Z_to_atomic_weight(Z):
+
+    return std_atomic_weight[Z - 1]
+
+def Z_to_color(Z):
+
+    return atom_color[Z - 1]
