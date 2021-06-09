@@ -51,6 +51,14 @@ class MolecularFragmenter:
             fragment_sizes[i] = fragment.size
         return fragment_sizes
 
+    @property
+    def n_fragment(self):
+        return self.g.n_vertices
+
+    @property
+    def n_capped_bonds(self):
+        return self.g.n_edges
+
     def store_fragments(self, file_prefix):
         """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
 
@@ -130,8 +138,7 @@ class MolecularFragmenter:
 
         Warning
         -------
-        This should not be done before the molecule has been fragmented, since initially all fragments are of size 1
-        and this process is :math:`\mathcal{O}(N^2)` scaling.
+        This process is :math:`\mathcal{O}(N^2)` scaling.
         """
         for i, vertex_i in enumerate(self.g.vertices):
             for j, vertex_j in enumerate(self.g.vertices):
