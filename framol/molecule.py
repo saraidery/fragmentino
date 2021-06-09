@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 from framol.io import FileHandlerXYZ
 from framol.visualization_tools import VisualizationTool
 from framol.periodic_table import (
-    Z_to_symbol,
     symbol_to_Z,
+    Z_to_symbol,
     Z_to_covalent_radius,
     Z_to_atomic_weight,
     Z_to_color,
@@ -278,14 +278,15 @@ class Molecule:
         y_lines = []
         z_lines = []
 
-        # create bonds
         for bond in bonds:
             x_lines.append(self.xyz[bond[0], 0])
             x_lines.append(self.xyz[bond[1], 0])
             x_lines.append(None)
+
             y_lines.append(self.xyz[bond[0], 1])
             y_lines.append(self.xyz[bond[1], 1])
             y_lines.append(None)
+
             z_lines.append(self.xyz[bond[0], 2])
             z_lines.append(self.xyz[bond[1], 2])
             z_lines.append(None)
@@ -325,7 +326,7 @@ class Molecule:
             * self.bond_factor
         )
 
-        if color == None:  # Color by atomic number ()
+        if color == None:  # Color by atomic number
             colors = []
             for Z in self.Z:
                 colors.append(Z_to_color(Z))
@@ -348,5 +349,4 @@ class Molecule:
                 opacity=1,
             ),
         )
-
         return atoms
