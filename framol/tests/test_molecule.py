@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from pytest_mock import mocker
 import os
 
 
