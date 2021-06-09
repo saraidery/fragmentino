@@ -14,7 +14,6 @@ class TestFragmenter:
         f = MolecularFragmenter(25, os.path.join(file_path, "small_molecule_1.xyz"))
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
-        f.fragment()
 
         assert np.allclose(np.sort(m.xyz, axis=0), np.sort(f.g.vertices[0].xyz, axis=0))
         assert np.allclose(np.sort(m.Z), np.sort(f.g.vertices[0].Z))
@@ -24,7 +23,6 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(30, os.path.join(file_path, "medium_molecule_1.xyz"))
 
-        f.fragment()
 
         assert np.allclose([[0, 1]], f.g.edges[0])
 
@@ -33,7 +31,6 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "small_molecule_4.xyz"))
 
-        f.fragment()
 
         edges = [[0, 2], [1, 2]]
         assert np.allclose(edges, f.g.edges)
@@ -43,7 +40,6 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(2, os.path.join(file_path, "small_molecule_1.xyz"))
 
-        f.fragment()
 
         f.add_H_to_capped_bonds()
 
@@ -63,7 +59,6 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
 
         f = MolecularFragmenter(10, os.path.join(file_path, "small_molecule_1.xyz"))
-        f.fragment()
 
         f.store_fragments(os.path.join(file_path, "small_molecule_1"))
 
@@ -82,7 +77,6 @@ class TestFragmenter:
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(20, os.path.join(file_path, "medium_molecule_1.xyz"))
 
-        f.fragment()
 
         central_fragment_before = f.find_central_fragment()
         f.swap_fragments(central_fragment_before, 0)
@@ -96,7 +90,6 @@ class TestFragmenter:
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(30, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
 
         f.store_full(os.path.join(file_path, "medium_molecule_1"))
 
@@ -114,7 +107,6 @@ class TestFragmenter:
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
 
         fragment_size_before = f.fragment_sizes
         f.group_fragments_by_size()
@@ -129,5 +121,4 @@ class TestFragmenter:
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        f.fragment()
         assert f.size == 33

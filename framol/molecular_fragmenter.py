@@ -21,6 +21,7 @@ class MolecularFragmenter:
 
         self.m = Molecule.from_xyz_file(file_name)
         self.g = WeightedGraph(max_fragment_size)
+        self.fragment()
 
     def fragment(self):
         r"""Fragments the molecule in an :math:`\mathcal{O}(N^2)` procedure:

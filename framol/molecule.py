@@ -17,10 +17,10 @@ class Molecule:
 
         Parameters
         ----------
-        Z : numpy array(int)
+        Z : numpy.ndarray
             Atomic numbers (index n perodic table)
 
-        xyz : numpy array, float
+        xyz : numpy.ndarray
             Cartesian coordinates in Angstrom
         """
         self.xyz = np.atleast_2d(xyz)
