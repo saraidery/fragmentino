@@ -9,7 +9,6 @@ from framol.periodic_table import Z_to_bond_length
 from framol import WeightedGraph
 from framol.visualization_tools import Figure
 
-
 class MolecularFragmenter:
     """Handles the fragmentation of a molecule"""
 

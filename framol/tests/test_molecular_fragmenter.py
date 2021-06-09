@@ -139,7 +139,6 @@ class TestFragmenter:
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-
         f.plot_fragments()
 
     def test_plot_with_color(self, monkeypatch):
