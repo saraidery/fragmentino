@@ -4,8 +4,9 @@ import os
 
 
 from framol import Molecule
-from framol.periodic_table import number_to_symbol, symbol_to_number
+from framol.periodic_table import symbol_to_Z
 from framol import io
+from framol.visualization_tools import VisualizationTool
 
 
 class TestMolecule:
@@ -98,12 +99,12 @@ class TestMolecule:
 
         file_path = os.path.dirname(__file__)
 
-        m.write(os.path.join(file_path, "small_molecule_2.xyz"))
+        m.write_xyz(os.path.join(file_path, "small_molecule_2.xyz"))
 
         fh = io.FileHandlerXYZ(os.path.join(file_path, "small_molecule_2.xyz"))
         symbols, xyz = fh.read()
 
-        Z = np.fromiter(map(symbol_to_number, symbols), dtype=int)
+        Z = np.fromiter(map(symbol_to_Z, symbols), dtype=int)
 
         assert np.allclose(xyz_reference, xyz)
         assert np.allclose(Z_reference, Z)
@@ -217,3 +218,25 @@ class TestMolecule:
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
         assert repr(m) == "Molecule 3"
+
+    def test_plot(self, monkeypatch):
+        def mockreturn(m, fig):
+            return None
+
+        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+
+        file_path = os.path.dirname(__file__)
+        m = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        m.plot()
+
+    def test_plot_with_color(self, monkeypatch):
+        def mockreturn(v, fig):
+            return None
+
+        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+
+        file_path = os.path.dirname(__file__)
+        m = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        m.plot(color="pink")

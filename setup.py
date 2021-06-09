@@ -9,6 +9,6 @@ setup(
     name="framol",
     author="Sarai D. Folkestad",
     description="Description of package",
-    install_requires=["numpy", "scipy"],
+    install_requires=["numpy", "scipy", "plotly"],
     extras_require=extra_requirements,
 )

@@ -1,10 +1,13 @@
 import numpy as np
 from scipy.spatial import distance_matrix
+import plotly.graph_objects as go
+import random
 
 
 from framol.molecule import Molecule
-from framol.periodic_table import covalent_radii
+from framol.periodic_table import Z_to_bond_length
 from framol import WeightedGraph
+from framol.visualization_tools import VisualizationTool
 
 
 class MolecularFragmenter:
@@ -21,9 +24,9 @@ class MolecularFragmenter:
 
         self.m = Molecule.from_xyz_file(file_name)
         self.g = WeightedGraph(max_fragment_size)
-        self.fragment()
+        self._fragment()
 
-    def fragment(self):
+    def _fragment(self):
         r"""Fragments the molecule in an :math:`\mathcal{O}(N^2)` procedure:
 
         - Makes a fragment for each atom. These atoms are the initial vertices of a graph
@@ -53,7 +56,7 @@ class MolecularFragmenter:
         return fragment_sizes
 
     @property
-    def n_fragment(self):
+    def n_fragments(self):
         return self.g.n_vertices
 
     @property
@@ -70,7 +73,7 @@ class MolecularFragmenter:
 
         """
         for i, molecule in enumerate(self.g.vertices):
-            molecule.write(file_prefix + "_fragment_" + str(i) + ".xyz")
+            molecule.write_xyz(file_prefix + "_fragment_" + str(i) + ".xyz")
 
     def store_full(self, file_prefix):
 
@@ -79,30 +82,35 @@ class MolecularFragmenter:
             if i > 0:
                 m.merge(molecule)
 
-        m.write(file_prefix + "_full" + ".xyz")
+        m.write_xyz(file_prefix + "_full" + ".xyz")
 
     def add_H_to_capped_bonds(self):
         """
         Hydrogen is added with an apropriate bond length (given by covalent radii)
         in a direction given by the unit vector along the capped bond.
         """
+        Z_H = 1
         for v1, v2 in self.g.edges:
 
             m1 = self.g.vertices[v1]
             m2 = self.g.vertices[v2]
 
-            bonds = m1.bonds_to(m2)
+            bonds = m1.get_bonds_to(m2)
+            for bond in bonds:
 
-            for a1, a2, r in bonds:
+                a1 = bond[0]
+                a2 = bond[1]
 
-                length = np.linalg.norm(r)
-                n = r / length
+                r = m2.xyz[a2, :] - m1.xyz[a1, :]
+                n = r / (np.linalg.norm(r))
 
-                bond_to_H = covalent_radii[m1.Z[a1] - 1] + covalent_radii[0]
-                m1.add_atom(1, m1.xyz[a1, :] + n * bond_to_H)
+                # add H to m1
+                length = Z_to_bond_length(m1.Z[a1], Z_H, m1.bond_factor)
+                m1.add_atom(Z_H, m1.xyz[a1, :] + n * length)
 
-                bond_to_H = covalent_radii[m2.Z[a2] - 1] + covalent_radii[0]
-                m2.add_atom(1, m2.xyz[a2, :] - n * bond_to_H)
+                # add H to m2
+                length = Z_to_bond_length(m2.Z[a2], Z_H, m2.bond_factor)
+                m2.add_atom(Z_H, m2.xyz[a2, :] - n * length)
 
     def _merge_fragments(self):
         """Merge fragments"""
@@ -119,6 +127,7 @@ class MolecularFragmenter:
 
         CM = np.array(CM)
         i = np.linalg.norm(CM - np.mean(CM, axis=0), axis=1).argmin()
+
         return i
 
     def swap_fragments(self, f1, f2):
@@ -135,8 +144,7 @@ class MolecularFragmenter:
         self.g.swap_vertices(f1, f2)
 
     def group_fragments_by_size(self):
-        """Groups fragments such that fragments of the same size follow each other
-
+        r"""Groups fragments such that fragments of the same size follow each other
         Warning
         -------
         This process is :math:`\mathcal{O}(N^2)` scaling.
@@ -144,4 +152,23 @@ class MolecularFragmenter:
         for i, vertex_i in enumerate(self.g.vertices):
             for j, vertex_j in enumerate(self.g.vertices):
                 if j > i and vertex_i.same_size(vertex_j):
-                        self.swap_fragments(i + 1, j)
+                    self.swap_fragments(i + 1, j)
+
+    def plot_fragments(self, colors="by atom"):
+        plots = []
+
+        for molecule in self.g.vertices:
+
+            if colors == "random":
+                color = "#%06x" % random.randint(0, 0xFFFFFF)
+            elif colors == "by atom":
+                color = None
+
+            plots.append(molecule.get_atom_plot_data(color))
+            plots.append(molecule.get_bond_plot_data(color))
+
+        fig = go.Figure(data=plots)
+
+        v = VisualizationTool()
+        v.update_figure_layout(fig)
+        v.show_figure(fig)
