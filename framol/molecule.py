@@ -181,7 +181,7 @@ class Molecule:
         Returns
         -------
         bonds : list
-            List of bonds, given as ``[atom_idx_1, atom_idx_2, bond_length]``.
+            List of bonds, given as ``[atom_1_index, atom_2_index, distance]``.
         """
         sum_covalent_radii = self._get_theoretical_covalent_bond_lengths()
         distances = self.distances
@@ -195,7 +195,7 @@ class Molecule:
 
         return bonds
 
-    def bonds_to(self, other):
+    def get_bonds_to(self, other):
         """Determines bonds to another molecule.
 
         Parameters
@@ -206,8 +206,7 @@ class Molecule:
         Returns
         -------
         bonds : list
-            List of bonds, given as ``[atom_1_index, atom_2_index, r]``
-            where r is the vector along the bond.
+            List of bonds, given as ``[atom_1_index, atom_2_index, distance]``.
         """
         distances = distance_matrix(self.xyz, other.xyz)
 
@@ -222,8 +221,7 @@ class Molecule:
 
         bonds = []
         for row, col in zip(rows, cols):
-            r = other.xyz[col, :] - self.xyz[row, :]
-            bonds.append([row, col, r])
+            bonds.append([row, col, distances[row,col]])
 
         return bonds
 

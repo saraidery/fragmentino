@@ -86,17 +86,17 @@ class MolecularFragmenter:
             m1 = self.g.vertices[v1]
             m2 = self.g.vertices[v2]
 
-            bonds = m1.bonds_to(m2)
-            for a1, a2, r in bonds:
+            bonds = m1.get_bonds_to(m2)
+            for bond in bonds:
 
-                # unit vector along bond
+                a1 = bond[0]
+                a2 = bond[1]
+
+                r = m2.xyz[a2, :] - m1.xyz[a1, :]
                 n = r / (np.linalg.norm(r))
-                print(n)
 
-                print(m1.xyz[a1, :])
                 # add H to m1
                 length = Z_to_bond_length(m1.Z[a1], Z_H, m1.bond_factor)
-                print(length)
                 m1.add_atom(Z_H, m1.xyz[a1, :] + n * length)
 
                 # add H to m2
