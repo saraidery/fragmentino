@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 
 from framol.io import FileHandlerXYZ
-from framol.visualization_tools import VisualizationTool
+from framol.visualization_tools import Figure
 from framol.periodic_table import (
     symbol_to_Z,
     Z_to_symbol,
@@ -243,7 +243,7 @@ class Molecule:
         bonds = self.get_bond_plot_data(color)
         atoms = self.get_atom_plot_data(color)
 
-        v = VisualizationTool(data=[bonds, atoms])
+        v = Figure(data=[bonds, atoms])
         v.update_figure_layout()
         v.show_figure()
 

@@ -7,7 +7,7 @@ import random
 from framol.molecule import Molecule
 from framol.periodic_table import Z_to_bond_length
 from framol import WeightedGraph
-from framol.visualization_tools import VisualizationTool
+from framol.visualization_tools import Figure
 
 
 class MolecularFragmenter:
@@ -167,6 +167,6 @@ class MolecularFragmenter:
             plots.append(molecule.get_atom_plot_data(color))
             plots.append(molecule.get_bond_plot_data(color))
 
-        v = VisualizationTool(data=plots)
+        v = Figure(data=plots)
         v.update_figure_layout()
         v.show_figure()

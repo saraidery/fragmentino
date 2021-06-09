@@ -5,7 +5,7 @@ import os
 
 from framol import MolecularFragmenter
 from framol import Molecule
-from framol.visualization_tools import VisualizationTool
+from framol.visualization_tools import Figure
 
 
 class TestFragmenter:
@@ -135,7 +135,7 @@ class TestFragmenter:
         def mockreturn(v):
             return None
 
-        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+        monkeypatch.setattr(Figure, "show_figure", mockreturn)
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
@@ -146,7 +146,7 @@ class TestFragmenter:
         def mockreturn(v):
             return None
 
-        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+        monkeypatch.setattr(Figure, "show_figure", mockreturn)
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))

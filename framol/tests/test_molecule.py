@@ -6,7 +6,7 @@ import os
 from framol import Molecule
 from framol.periodic_table import symbol_to_Z
 from framol import io
-from framol.visualization_tools import VisualizationTool
+from framol.visualization_tools import Figure
 
 
 class TestMolecule:
@@ -223,7 +223,7 @@ class TestMolecule:
         def mockreturn(m):
             return None
 
-        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+        monkeypatch.setattr(Figure, "show_figure", mockreturn)
 
         file_path = os.path.dirname(__file__)
         m = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
@@ -234,7 +234,7 @@ class TestMolecule:
         def mockreturn(v):
             return None
 
-        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+        monkeypatch.setattr(Figure, "show_figure", mockreturn)
 
         file_path = os.path.dirname(__file__)
         m = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
