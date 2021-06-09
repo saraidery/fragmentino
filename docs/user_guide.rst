@@ -28,7 +28,6 @@ For example, we can fragment a DNA strand (given in the file ``dna_strand.xyz``)
 	from framol import MolecularFragmenter
 
 	f = MolecularFragmenter(50, "dna_strand.xyz")
-	f.fragment()
 
 We can visualize the result of the fragmentation by a call to the ``plot_fragments`` method. Either using the default (`CPK <https://en.wikipedia.org/wiki/CPK_coloring>`_) colors
 
@@ -72,8 +71,14 @@ The framol package can add hydrogen atoms at the ends of capped bonds through:
 	f.add_H_to_capped_bonds()
 	f.store_fragments("dna_strand")
 
-This will result in addition of H atoms along the bond that was capped.
+This will result in addition of H atoms along the bond that was capped. The class also allows for
 
+1. Finding the central fragment
+2. Swapping the order of two fragments
+3. Grouping fragments by size
+
+In the following example, the central fragment is found and set as the first fragment.
+Fragments of equal size are then grouped, before the fragments are written to file.
 
 .. code-block:: python
 
