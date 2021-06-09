@@ -210,29 +210,7 @@ class Molecule:
 
         fig = go.Figure(data=[atom_bonds, atoms])
 
-        fig.update_layout(
-            showlegend=False,
-            scene=dict(
-                xaxis_title="",
-                yaxis_title="",
-                zaxis_title="",
-                xaxis=dict(
-                    showbackground=False,
-                    tickvals=[],
-                ),
-                yaxis=dict(
-                    showbackground=False,
-                    tickvals=[],
-                ),
-                zaxis=dict(
-                    showbackground=False,
-                    tickvals=[],
-                ),
-            ),
-            margin=dict(l=0, r=0, t=0, b=0),
-        )
-
-        return fig
+        self.show_figure(fig)
 
     def get_bonds_plot(self, color=None, label='bonds'):
 
@@ -269,7 +247,6 @@ class Molecule:
 
         return atom_bonds
 
-
     def get_atoms_plot(self, color=None, label='atom'):
 
         sizes = 25 * covalent_radii[self.Z - 1]*self.bond_factor
@@ -299,3 +276,29 @@ class Molecule:
         )
 
         return atoms
+
+    def show_figure(self, fig):
+
+        fig.update_layout(
+        showlegend=False,
+        scene=dict(
+            xaxis_title="",
+            yaxis_title="",
+            zaxis_title="",
+            xaxis=dict(
+                showbackground=False,
+                tickvals=[],
+            ),
+            yaxis=dict(
+                showbackground=False,
+                tickvals=[],
+            ),
+            zaxis=dict(
+                showbackground=False,
+                tickvals=[],
+            ),
+        ),
+        margin=dict(l=0, r=0, t=0, b=0),
+        )
+
+        fig.show()
