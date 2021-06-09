@@ -5,6 +5,7 @@ import os
 
 from framol import MolecularFragmenter
 from framol import Molecule
+from framol.visualization_tools import VisualizationTool
 
 
 class TestFragmenter:
@@ -131,3 +132,27 @@ class TestFragmenter:
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
         f.fragment()
         assert f.size == 33
+
+    def test_plot(self, monkeypatch):
+        def mockreturn(v, fig):
+            return None
+
+        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+        f.fragment()
+
+        f.plot_fragments()
+
+    def test_plot_with_color(self, monkeypatch):
+        def mockreturn(v, fig):
+            return None
+
+        monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+        f.fragment()
+
+        f.plot_fragments("random")
