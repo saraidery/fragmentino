@@ -11,6 +11,7 @@ from framol.periodic_table import (
     std_atomic_weight,
     atom_color,
 )
+from framol.visualization_tools import VisualizationTool
 
 
 class Molecule:
@@ -205,12 +206,14 @@ class Molecule:
 
     def plot(self, color=None):
 
-        atom_bonds = self.get_bonds_plot()
-        atoms = self.get_atoms_plot()
+        atom_bonds = self.get_bonds_plot(color)
+        atoms = self.get_atoms_plot(color)
 
         fig = go.Figure(data=[atom_bonds, atoms])
 
-        self.show_figure(fig)
+        v = VisualizationTool()
+        v.update_figure_layout(fig)
+        v.show_figure(fig)
 
     def get_bonds_plot(self, color=None, label='bonds'):
 
@@ -276,29 +279,3 @@ class Molecule:
         )
 
         return atoms
-
-    def show_figure(self, fig):
-
-        fig.update_layout(
-        showlegend=False,
-        scene=dict(
-            xaxis_title="",
-            yaxis_title="",
-            zaxis_title="",
-            xaxis=dict(
-                showbackground=False,
-                tickvals=[],
-            ),
-            yaxis=dict(
-                showbackground=False,
-                tickvals=[],
-            ),
-            zaxis=dict(
-                showbackground=False,
-                tickvals=[],
-            ),
-        ),
-        margin=dict(l=0, r=0, t=0, b=0),
-        )
-
-        fig.show()

@@ -7,6 +7,7 @@ import random
 from framol.molecule import Molecule
 from framol.periodic_table import covalent_radii
 from framol import WeightedGraph
+from framol.visualization_tools import VisualizationTool
 
 
 class MolecularFragmenter:
@@ -149,33 +150,12 @@ class MolecularFragmenter:
                 color = "#%06x" % random.randint(i, 0xFFFFFF)
             elif (colors == "by atom"):
                 color = None
-            else :
-                raise ValueError("Did not recognize the color scheme!")
+
             plots.append(molecule.get_atoms_plot(color))
             plots.append(molecule.get_bonds_plot(color))
 
         fig = go.Figure(data=plots)
 
-        fig.update_layout(
-        showlegend=False,
-        scene=dict(
-            xaxis_title="",
-            yaxis_title="",
-            zaxis_title="",
-            xaxis=dict(
-                showbackground=False,
-                tickvals=[],
-            ),
-            yaxis=dict(
-                showbackground=False,
-                tickvals=[],
-            ),
-            zaxis=dict(
-                showbackground=False,
-                tickvals=[],
-            ),
-        ),
-        margin=dict(l=0, r=0, t=0, b=0),
-        )
-
-        return fig
+        v = VisualizationTool()
+        v.update_figure_layout(fig)
+        v.show_figure(fig)
