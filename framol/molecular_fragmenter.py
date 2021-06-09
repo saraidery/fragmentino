@@ -167,8 +167,6 @@ class MolecularFragmenter:
             plots.append(molecule.get_atom_plot_data(color))
             plots.append(molecule.get_bond_plot_data(color))
 
-        fig = go.Figure(data=plots)
-
-        v = VisualizationTool()
-        v.update_figure_layout(fig)
-        v.show_figure(fig)
+        v = VisualizationTool(data=plots)
+        v.update_figure_layout()
+        v.show_figure()

@@ -243,11 +243,9 @@ class Molecule:
         bonds = self.get_bond_plot_data(color)
         atoms = self.get_atom_plot_data(color)
 
-        fig = go.Figure(data=[bonds, atoms])
-
-        v = VisualizationTool()
-        v.update_figure_layout(fig)
-        v.show_figure(fig)
+        v = VisualizationTool(data=[bonds, atoms])
+        v.update_figure_layout()
+        v.show_figure()
 
     def get_bond_plot_data(self, color=None, label="bonds"):
         """Gets the data for plotting bonds using plotly

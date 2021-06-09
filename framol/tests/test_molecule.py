@@ -220,7 +220,7 @@ class TestMolecule:
         assert repr(m) == "Molecule 3"
 
     def test_plot(self, monkeypatch):
-        def mockreturn(m, fig):
+        def mockreturn(m):
             return None
 
         monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)
@@ -231,7 +231,7 @@ class TestMolecule:
         m.plot()
 
     def test_plot_with_color(self, monkeypatch):
-        def mockreturn(v, fig):
+        def mockreturn(v):
             return None
 
         monkeypatch.setattr(VisualizationTool, "show_figure", mockreturn)

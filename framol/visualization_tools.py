@@ -1,7 +1,15 @@
-class VisualizationTool:
-    def update_figure_layout(self, fig):
+import plotly.graph_objects as go
 
-        fig.update_layout(
+
+class VisualizationTool:
+
+    def __init__(self, data):
+        self.fig = go.Figure(data)
+
+
+    def update_figure_layout(self):
+
+        self.fig.update_layout(
             showlegend=False,
             scene=dict(
                 xaxis_title="",
@@ -23,5 +31,5 @@ class VisualizationTool:
             margin=dict(l=0, r=0, t=0, b=0),
         )
 
-    def show_figure(self, fig):
-        fig.show()  # pragma: no cover
+    def show_figure(self):
+        self.fig.show()  # pragma: no cover
