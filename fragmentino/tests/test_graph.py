@@ -14,7 +14,6 @@ from fragmentino import SimpleWeightedGraph
 
 class TestGraph:
     def test_add_edge_1(self):
-
         g = SimpleWeightedGraph()
         g.add_vertex("1")
         g.add_vertex("2")
@@ -32,7 +31,6 @@ class TestGraph:
         assert np.allclose(weights, g.weights)
 
     def test_add_illegal_edge_1(self):
-
         g = SimpleWeightedGraph()
         g.add_vertex("1")
         g.add_vertex("2")
@@ -43,7 +41,6 @@ class TestGraph:
             g.add_edge(2, 0, 0.5)
 
     def test_add_illegal_edge_2(self):
-
         g = SimpleWeightedGraph()
         g.add_vertex("1")
         g.add_vertex("2")
