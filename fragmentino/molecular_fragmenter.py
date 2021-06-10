@@ -16,6 +16,7 @@ from fragmentino.periodic_table import Z_to_bond_length
 from fragmentino import WeightedGraph
 from fragmentino.visualization_tools import Figure
 
+
 class MolecularFragmenter:
     """Handles the fragmentation of a molecule"""
 

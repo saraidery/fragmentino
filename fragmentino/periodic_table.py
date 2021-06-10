@@ -58,6 +58,7 @@ atom_color = ["#D2D2D2", "#00FFFF",   # H-He
 ]
 # fmt: on
 
+
 def Z_to_symbol(Z):
     return _periodic_table[Z - 1]
 
