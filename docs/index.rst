@@ -11,6 +11,6 @@ framol
    :caption: Contents:
 
    reference.rst
-   user_guide.rst
+   user_guide.ipynb
 
 

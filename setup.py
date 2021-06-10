@@ -2,7 +2,7 @@ from setuptools import setup
 
 extra_requirements = {
     "tests": ["pytest", "coverage", "pytest-cov"],
-    "docs": ["sphinx", "sphinx-autodoc-typehints", "furo"],
+    "docs": ["sphinx", "sphinx-autodoc-typehints", "furo", "sphinx-copybutton", "nbsphinx", "pandoc"],
 }
 
 setup(
@@ -12,3 +12,4 @@ setup(
     install_requires=["numpy", "scipy", "plotly"],
     extras_require=extra_requirements,
 )
+

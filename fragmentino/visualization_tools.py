@@ -35,5 +35,5 @@ class Figure:
             margin=dict(l=0, r=0, t=0, b=0),
         )
 
-    def show_figure(self):
-        self.fig.show()  # pragma: no cover
+    def show_figure(self, **kwargs):
+        self.fig.show(**kwargs)  # pragma: no cover

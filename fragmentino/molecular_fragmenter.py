@@ -161,7 +161,15 @@ class MolecularFragmenter:
                 if j > i and vertex_i.same_size(vertex_j):
                     self.swap_fragments(i + 1, j)
 
-    def plot_fragments(self, colors="by atom"):
+    def plot_fragments(self, colors="by atom", **kwargs):
+        """Plot fragments.
+
+        Parameters
+        ----------
+        colors : str, optional
+        kwargs
+            Keyword arguments passed to :meth:`plotly.graph_objects.Figure.show`.
+        """
         plots = []
 
         for molecule in self.g.vertices:
@@ -176,4 +184,4 @@ class MolecularFragmenter:
 
         v = Figure(data=plots)
         v.update_figure_layout()
-        v.show_figure()
+        v.show_figure(**kwargs)
