@@ -10,9 +10,9 @@ from scipy.spatial import distance_matrix
 import plotly.graph_objects as go
 
 
-from framol.io import FileHandlerXYZ
-from framol.visualization_tools import Figure
-from framol.periodic_table import (
+from fragmentino.io import FileHandlerXYZ
+from fragmentino.visualization_tools import Figure
+from fragmentino.periodic_table import (
     symbol_to_Z,
     Z_to_symbol,
     Z_to_covalent_radius,

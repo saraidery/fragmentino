@@ -10,7 +10,7 @@ import pytest
 import os
 
 
-from framol import io
+from fragmentino import io
 
 
 class TestIO:
