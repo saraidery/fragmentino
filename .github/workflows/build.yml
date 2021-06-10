@@ -1,5 +1,4 @@
 name: build
-
 on:
   push:
     branches:
@@ -31,5 +30,8 @@ jobs:
         run: pytest --cov=fragmentino --pyargs fragmentino
       - name: Generate line coverage
         run: coverage report --show-missing
-
+      - name: Install Black
+        run: pip install black
+      - name: Run black --check .
+        run: black --check .
 
