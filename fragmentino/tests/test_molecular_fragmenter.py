@@ -10,9 +10,9 @@ import pytest
 import os
 
 
-from framol import MolecularFragmenter
-from framol import Molecule
-from framol.visualization_tools import Figure
+from fragmentino import MolecularFragmenter
+from fragmentino import Molecule
+from fragmentino import Figure
 
 
 class TestFragmenter:

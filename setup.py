@@ -6,7 +6,7 @@ extra_requirements = {
 }
 
 setup(
-    name="framol",
+    name="fragmentino",
     author="Sarai D. Folkestad",
     description="Description of package",
     install_requires=["numpy", "scipy", "plotly"],

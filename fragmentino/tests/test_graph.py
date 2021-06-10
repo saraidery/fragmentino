@@ -9,7 +9,7 @@ import pytest
 import os
 
 
-from framol import SimpleWeightedGraph
+from fragmentino import SimpleWeightedGraph
 
 
 class TestGraph:

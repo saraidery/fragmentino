@@ -10,10 +10,10 @@ import pytest
 import os
 
 
-from framol import Molecule
-from framol.periodic_table import symbol_to_Z
-from framol import io
-from framol.visualization_tools import Figure
+from fragmentino import Molecule
+from fragmentino.periodic_table import symbol_to_Z
+from fragmentino import io
+from fragmentino import Figure
 
 
 class TestMolecule:

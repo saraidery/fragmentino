@@ -11,10 +11,10 @@ import plotly.graph_objects as go
 import random
 
 
-from framol.molecule import Molecule
-from framol.periodic_table import Z_to_bond_length
-from framol import WeightedGraph
-from framol.visualization_tools import Figure
+from fragmentino.molecule import Molecule
+from fragmentino.periodic_table import Z_to_bond_length
+from fragmentino import WeightedGraph
+from fragmentino.visualization_tools import Figure
 
 class MolecularFragmenter:
     """Handles the fragmentation of a molecule"""
