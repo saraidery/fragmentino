@@ -6,4 +6,4 @@ Fragmentino
     :target: https://github.com/saraidery/fragment-molecule/actions
     :alt: Build status
     
-A small package to fragment molecules.
+A small package for fragmentation of molecules.
