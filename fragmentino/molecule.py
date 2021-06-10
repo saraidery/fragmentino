@@ -155,7 +155,7 @@ class Molecule:
         """
 
         bond_length = np.zeros((self.size, self.size))
-        for i, Z in enumerate(self.Z):
+        for i, Z in enumerate(self.Z)     :
             bond_length[i, :] += Z_to_covalent_radius(Z)
             bond_length[:, i] += Z_to_covalent_radius(Z)
 
