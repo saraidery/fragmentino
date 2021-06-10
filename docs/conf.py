@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "framol"
+project = "fragmentino"
 copyright = "2021, Sarai D. Folkestad"
 author = "Sarai D. Folkestad"
 
