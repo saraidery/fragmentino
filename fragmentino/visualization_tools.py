@@ -9,10 +9,8 @@ import plotly.graph_objects as go
 
 
 class Figure:
-
     def __init__(self, data):
         self.fig = go.Figure(data)
-
 
     def update_figure_layout(self):
         self.fig.update_layout(
