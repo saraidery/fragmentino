@@ -57,8 +57,8 @@ class SimpleWeightedGraph:
         return self.n_edges
 
 
-class WeightedGraph(SimpleWeightedGraph):
-    """Weighted graph class
+class ContractableWeightedGraph(SimpleWeightedGraph):
+    """Contractable weighted graph class
 
     Attributes
     ----------
