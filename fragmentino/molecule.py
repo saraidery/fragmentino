@@ -324,7 +324,7 @@ class Molecule:
             Data for 3D scatter plot (plotly)
         """
         marker_sizes = (
-            25
+            20
             * np.fromiter(map(Z_to_covalent_radius, (self.Z)), dtype=float)
             * self.bond_factor
         )

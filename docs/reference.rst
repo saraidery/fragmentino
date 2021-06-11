@@ -2,45 +2,45 @@
 API reference
 =============
 
-.. module:: framol
+.. module:: fragmentino
 
 MolecularFragmenter
 ===================
 
-.. currentmodule:: framol.molecular_fragmenter
+.. currentmodule:: fragmentino.molecular_fragmenter
 
-.. autoclass:: framol.MolecularFragmenter
+.. autoclass:: fragmentino.MolecularFragmenter
     :members:
 
 Molecule
 ========
 
-.. currentmodule:: framol.molecule
+.. currentmodule:: fragmentino.molecule
 
-.. autoclass:: framol.Molecule
+.. autoclass:: fragmentino.Molecule
     :members:
 
 
 FileHandlerXYZ
 ==============
 
-.. currentmodule:: framol.io
+.. currentmodule:: fragmentino.io
 
-.. autoclass:: framol.FileHandlerXYZ
+.. autoclass:: fragmentino.FileHandlerXYZ
     :members:
 
 SimpleWeightedGraph
 ===================
 
-.. currentmodule:: framol.graph
+.. currentmodule:: fragmentino.graph
 
-.. autoclass:: framol.SimpleWeightedGraph
+.. autoclass:: fragmentino.SimpleWeightedGraph
     :members:
 
 WeightedGraph
 =============
 
-.. currentmodule:: framol.graph
+.. currentmodule:: fragmentino.graph
 
-.. autoclass:: framol.WeightedGraph
+.. autoclass:: fragmentino.WeightedGraph
     :members:

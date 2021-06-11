@@ -36,7 +36,6 @@ class TestMolecule:
         assert np.allclose(Z, m.Z)
 
     def test_init_from_xyz_file(self):
-
         xyz_reference = np.array(
             [
                 [0.86681, 0.60100, 0.00000],
@@ -53,7 +52,6 @@ class TestMolecule:
         assert np.allclose(Z_reference, m.Z)
 
     def test_init_from_atoms(self):
-
         xyz_1 = [0.0000, 0.0000, 5.0000]
         Z_1 = 2
 
@@ -73,7 +71,6 @@ class TestMolecule:
         assert np.allclose(Z_reference, m_3.Z)
 
     def test_init_from_molecules(self):
-
         xyz = np.zeros((2, 3))
         Z = np.arange(1, 3)
 
@@ -98,7 +95,6 @@ class TestMolecule:
         assert np.allclose(Z_reference, m3.Z)
 
     def test_write(self):
-
         Z_reference = np.array([1, 2, 6])
         xyz_reference = np.zeros((3, 3))
 
@@ -127,7 +123,6 @@ class TestMolecule:
         assert np.allclose(size, xyz.shape[0])
 
     def test_distances(self):
-
         file_path = os.path.dirname(__file__)
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
@@ -142,7 +137,6 @@ class TestMolecule:
         assert np.allclose(dstances_reference, m.distances)
 
     def test_merge_two_atoms(self):
-
         xyz_1 = [0.0000, 0.0000, 5.0000]
         Z_1 = 2
 
@@ -162,7 +156,6 @@ class TestMolecule:
         assert np.allclose(Z_reference, m_1.Z)
 
     def test_merge_two_molecules(self):
-
         xyz = np.zeros((2, 3))
         Z = np.arange(1, 3)
 
@@ -208,10 +201,6 @@ class TestMolecule:
         assert np.allclose(Z_reference, m.Z)
 
     def test_center_of_mass(self):
-        """
-        Computes the center of mass based on nuclear charges
-        """
-
         file_path = os.path.dirname(__file__)
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
@@ -220,7 +209,6 @@ class TestMolecule:
         assert np.allclose(CM_reference, m.center_of_mass)
 
     def test_print(self):
-
         file_path = os.path.dirname(__file__)
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 

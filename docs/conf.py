@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "framol"
+project = "fragmentino"
 copyright = "2021, Sarai D. Folkestad"
 author = "Sarai D. Folkestad"
 
@@ -34,6 +34,8 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
+    "sphinx_copybutton",
+    "nbsphinx",
 ]
 
 # Create links to references within kikuchipy's documentation to these packages.
@@ -70,7 +72,7 @@ html_theme = "furo"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
-html_logo = "_static/images/amino_illustration.svg"
+html_logo = "_static/images/dna_illustration.png"
 html_favicon = "_static/images/favicon.png"
 # html_css_files = [
 #    "css/theme.css",

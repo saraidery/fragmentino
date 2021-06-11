@@ -33,7 +33,6 @@ class TestIO:
         assert all(symbols == symbols_reference)
 
     def test_io_readwrite(self):
-
         symbols_reference = ["H", "He", "C"]
         xyz_reference = np.zeros((3, 3))
 
