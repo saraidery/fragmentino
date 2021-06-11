@@ -12,7 +12,7 @@ import random
 
 from fragmentino.molecule import Molecule
 from fragmentino.periodic_table import Z_to_bond_length
-from fragmentino import WeightedGraph
+from fragmentino import ContractableWeightedGraph
 from fragmentino.visualization_tools import MoleculeFigure, MoleculePlotter
 
 
@@ -29,7 +29,7 @@ class MolecularFragmenter:
         """
 
         self.m = Molecule.from_xyz_file(file_name)
-        self.g = WeightedGraph(max_fragment_size)
+        self.g = ContractableWeightedGraph(max_fragment_size)
         self._fragment()
 
     def _fragment(self):

@@ -11,6 +11,8 @@ from fragmentino import Molecule
 
 
 class MoleculeFigure:
+    """Handles the generation and display of molecule plots using Plotly"""
+
     def __init__(self, data):
         self.fig = go.Figure(data)
         self._update_layout()
@@ -63,6 +65,8 @@ class MoleculeFigure:
 
 
 class MoleculePlotter:
+    """Handles the generation of data molecule plots using Plotly"""
+
     def __init__(self, molecule, color=None):
         self.molecule = molecule
         self.color = color
