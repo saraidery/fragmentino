@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from fragmentino import Molecule
 
 
-class Figure:
+class MoleculeFigure:
     def __init__(self, data):
         self.fig = go.Figure(data)
         self._update_layout()
@@ -96,7 +96,7 @@ class MoleculePlotter:
             z=z_lines,
             name=label,
             mode="lines",
-            line=dict(color=bond_color, width=10),
+            line=dict(color=bond_color, width=7),
         )
 
         return bond_plot
@@ -125,12 +125,12 @@ class MoleculePlotter:
         )
 
         marker_sizes = (
-            20
+            15
             * np.fromiter(map(Z_to_covalent_radius, (self.molecule.Z)), dtype=float)
             * self.molecule.bond_factor
         )
 
-        if self.color == None:  # Color by atomic number
+        if self.color == None:  # Color by atomic number (CPK)
             colors = []
             for Z in self.molecule.Z:
                 colors.append(Z_to_color(Z))

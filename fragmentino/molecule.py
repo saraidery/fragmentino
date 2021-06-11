@@ -7,7 +7,6 @@
 
 import numpy as np
 from scipy.spatial import distance_matrix
-import plotly.graph_objects as go
 
 
 from fragmentino.io import FileHandlerXYZ
