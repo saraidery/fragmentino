@@ -14,7 +14,7 @@ import random
 from fragmentino.molecule import Molecule
 from fragmentino.periodic_table import Z_to_bond_length
 from fragmentino import WeightedGraph
-from fragmentino.visualization_tools import Figure
+from fragmentino.visualization_tools import Figure, MoleculePlotter
 
 
 class MolecularFragmenter:
@@ -171,7 +171,6 @@ class MolecularFragmenter:
             Keyword arguments passed to :meth:`plotly.graph_objects.Figure.show`.
         """
         plots = []
-
         for molecule in self.g.vertices:
 
             if colors == "random":
@@ -179,9 +178,10 @@ class MolecularFragmenter:
             elif colors == "by atom":
                 color = None
 
-            plots.append(molecule.get_atom_plot_data(color))
-            plots.append(molecule.get_bond_plot_data(color))
+            plotter = MoleculePlotter(molecule, color)
+
+            plots.append(plotter.get_bond_plot())
+            plots.append(plotter.get_atom_plot())
 
         v = Figure(data=plots)
-        v.update_figure_layout()
         v.show_figure(**kwargs)
