@@ -13,7 +13,6 @@ import os
 from fragmentino import Molecule
 from fragmentino.periodic_table import symbol_to_Z
 from fragmentino import io
-from fragmentino import Figure
 
 
 class TestMolecule:
@@ -213,25 +212,3 @@ class TestMolecule:
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
         assert repr(m) == "Molecule 3"
-
-    def test_plot(self, monkeypatch):
-        def mockreturn(m):
-            return None
-
-        monkeypatch.setattr(Figure, "show_figure", mockreturn)
-
-        file_path = os.path.dirname(__file__)
-        m = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
-
-        m.plot()
-
-    def test_plot_with_color(self, monkeypatch):
-        def mockreturn(v):
-            return None
-
-        monkeypatch.setattr(Figure, "show_figure", mockreturn)
-
-        file_path = os.path.dirname(__file__)
-        m = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
-
-        m.plot(color="pink")

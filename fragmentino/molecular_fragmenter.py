@@ -7,14 +7,13 @@
 
 import numpy as np
 from scipy.spatial import distance_matrix
-import plotly.graph_objects as go
 import random
 
 
 from fragmentino.molecule import Molecule
 from fragmentino.periodic_table import Z_to_bond_length
 from fragmentino import WeightedGraph
-from fragmentino.visualization_tools import Figure
+from fragmentino.visualization_tools import MoleculeFigure, MoleculePlotter
 
 
 class MolecularFragmenter:
@@ -161,27 +160,28 @@ class MolecularFragmenter:
                 if j > i and vertex_i.same_size(vertex_j):
                     self.swap_fragments(i + 1, j)
 
-    def plot_fragments(self, colors="by atom", **kwargs):
+    def plot_fragments(self, colors="random", **kwargs):
         """Plot fragments.
 
         Parameters
         ----------
         colors : str, optional
+            Default is "random"
         kwargs
             Keyword arguments passed to :meth:`plotly.graph_objects.Figure.show`.
         """
         plots = []
-
         for molecule in self.g.vertices:
 
             if colors == "random":
                 color = "#%06x" % random.randint(0, 0xFFFFFF)
-            elif colors == "by atom":
+            elif colors == "CPK":
                 color = None
 
-            plots.append(molecule.get_atom_plot_data(color))
-            plots.append(molecule.get_bond_plot_data(color))
+            plotter = MoleculePlotter(molecule, color)
 
-        v = Figure(data=plots)
-        v.update_figure_layout()
+            plots.append(plotter.get_bond_plot())
+            plots.append(plotter.get_atom_plot())
+
+        v = MoleculeFigure(data=plots)
         v.show_figure(**kwargs)
