@@ -11,8 +11,7 @@ import os
 
 class FileHandlerXYZ:
 
-    """File handler xyz class
-    Handles the readng and writing of xyz-files.
+    """Handles the reading and writing of xyz-files.
 
     The standard format of xyz-files assumed:
     line 1: Number of atoms
@@ -80,7 +79,5 @@ class FileHandlerXYZ:
 
 
 def _remove_zero_width_whitespace(string):
-
     """Remove non-zero whitespaces"""
-
     return string.strip(u"\u200b")

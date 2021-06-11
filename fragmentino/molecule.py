@@ -20,6 +20,8 @@ from fragmentino.periodic_table import (
 
 
 class Molecule:
+    """Stores the molecule and its properties"""
+
     def __init__(self, Z, xyz, bond_factor=1.3):
         """Creates a molecule
 
