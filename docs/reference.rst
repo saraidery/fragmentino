@@ -18,21 +18,24 @@ Molecule
 .. currentmodule:: fragmentino.molecule
 
 .. autoclass:: fragmentino.Molecule
+    :members:
 
 
-MolecularPlotter
+MoleculePlotter
 ================
 
 .. currentmodule:: fragmentino.visualization_tools
 
 .. autoclass:: fragmentino.MoleculePlotter
+    :members:
 
-MolecularFigure
+MoleculeFigure
 ================
 
 .. currentmodule:: fragmentino.visualization_tools
 
 .. autoclass:: fragmentino.MoleculeFigure
+    :members:
 
 
 

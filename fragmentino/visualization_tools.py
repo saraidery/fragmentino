@@ -16,6 +16,7 @@ class MoleculeFigure:
         self._update_layout()
 
     def _update_layout(self):
+        """Sets layout for molecule plots"""
         self.fig.update_layout(
             showlegend=False,
             scene=dict(
@@ -38,10 +39,26 @@ class MoleculeFigure:
             margin=dict(l=0, r=0, t=0, b=0),
         )
 
-    def show_figure(self, **kwargs):
+    def show(self, **kwargs):
+        """Shows the generated figure
+
+        Parameters
+        ----------
+        kwargs
+            Keyword arguments passed to :meth:`plotly.graph_objects.Figure.show`.
+
+        """
         self.fig.show(**kwargs)  # pragma: no cover
 
     def get_figure(self):
+        """Returns the generated figure
+
+        Returns
+        -------
+
+        fig : plotly.graph_objects.Figure
+
+        """
         return self.fig
 
 
@@ -64,8 +81,8 @@ class MoleculePlotter:
 
         Returns
         -------
-        bonds : Scatter3d
-            Data for 3D scatter plot (plotly)
+        bond_plot : plotly.graph_object.Scatter3d
+            3D scatter plot with bonds
         """
         if self.color == None:
             bond_color = "black"
@@ -116,8 +133,8 @@ class MoleculePlotter:
 
         Returns
         -------
-        atoms : Scatter3d
-            Data for 3D scatter plot (plotly)
+        atom_plot : plotly.graph_object.Scatter3d
+            3D scatter plot with atoms
         """
         from fragmentino.periodic_table import (
             Z_to_covalent_radius,
