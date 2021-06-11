@@ -21,6 +21,24 @@ Molecule
     :members:
 
 
+MoleculePlotter
+================
+
+.. currentmodule:: fragmentino.visualization_tools
+
+.. autoclass:: fragmentino.MoleculePlotter
+    :members:
+
+MoleculeFigure
+================
+
+.. currentmodule:: fragmentino.visualization_tools
+
+.. autoclass:: fragmentino.MoleculeFigure
+    :members:
+
+
+
 FileHandlerXYZ
 ==============
 

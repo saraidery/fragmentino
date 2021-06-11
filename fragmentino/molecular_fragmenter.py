@@ -184,4 +184,4 @@ class MolecularFragmenter:
             plots.append(plotter.get_atom_plot())
 
         v = MoleculeFigure(data=plots)
-        v.show_figure(**kwargs)
+        v.show(**kwargs)
