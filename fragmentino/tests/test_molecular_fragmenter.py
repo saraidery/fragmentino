@@ -131,7 +131,7 @@ class TestFragmenter:
         def mockreturn(v):
             return None
 
-        monkeypatch.setattr(MoleculeFigure, "show_figure", mockreturn)
+        monkeypatch.setattr(MoleculeFigure, "show", mockreturn)
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
@@ -141,7 +141,7 @@ class TestFragmenter:
         def mockreturn(v):
             return None
 
-        monkeypatch.setattr(MoleculeFigure, "show_figure", mockreturn)
+        monkeypatch.setattr(MoleculeFigure, "show", mockreturn)
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
