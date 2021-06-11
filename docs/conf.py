@@ -35,7 +35,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "nbsphinx"
+    "nbsphinx",
 ]
 
 # Create links to references within kikuchipy's documentation to these packages.
