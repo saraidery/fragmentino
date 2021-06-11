@@ -14,6 +14,7 @@ from fragmentino import Molecule
 from fragmentino import MoleculePlotter
 from fragmentino import MoleculeFigure
 
+
 class TestMoleculePlotter:
     def test_plotter(self):
         file_path = os.path.dirname(__file__)
@@ -21,7 +22,6 @@ class TestMoleculePlotter:
 
         plotter = MoleculePlotter(m)
 
-        data=[plotter.get_atom_plot(), plotter.get_bond_plot()]
+        data = [plotter.get_atom_plot(), plotter.get_bond_plot()]
         v = MoleculeFigure(data=data)
         v.get_figure()
-
