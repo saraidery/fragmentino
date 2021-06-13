@@ -112,11 +112,6 @@ class TestFragmenter:
         assert np.allclose(sizes_before, before_reference)
         assert np.allclose(sizes_after, after_reference)
 
-    def test_size(self):
-        file_path = os.path.dirname(__file__)
-        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        assert f.size == 33
-
     def test_n_fragments(self):
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))

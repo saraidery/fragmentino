@@ -33,15 +33,18 @@ class MolecularFragmenter:
         self._fragment()
 
     def __getitem__(self, key):
-        return Molecule(self.g.vertices[key])
+        return self.g.vertices[key]
 
     def __iter__(self):
         for fragment in self.g.vertices:
             yield fragment
 
-    @property
-    def size(self):
-        return self.m.size
+    def __repr__(self):
+        return (
+            f"{self.__class__.__name__}"
+            + f" Fragments: {self.n_fragments}"
+            + f" Capped bonds: {self.n_capped_bonds}"
+        )
 
     @property
     def fragment_sizes(self):
@@ -73,7 +76,6 @@ class MolecularFragmenter:
             fragment.write_xyz(file_prefix + "_fragment_" + str(i) + ".xyz")
 
     def store_full(self, file_prefix):
-
         m = Molecule(self.g.vertices[0].Z, self.g.vertices[0].xyz)
         for i, fragment in enumerate(self):
             if i > 0:
@@ -146,7 +148,6 @@ class MolecularFragmenter:
             for j, fragment_j in enumerate(self):
                 if j > i and fragment_i.same_size(fragment_j):
                     self.swap_fragments(i + 1, j)
-
 
     def plot_fragments(self, colors="random", **kwargs):
         """Plot fragments.
