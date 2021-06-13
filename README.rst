@@ -1,6 +1,6 @@
 Fragmentino
 ===========
-A small package for fragmentation of molecules.
+A small Python package for fragmentation of molecules.
 
 .. GitHub Actions
 .. image:: https://github.com/saraidery/fragment-molecule/workflows/build/badge.svg
