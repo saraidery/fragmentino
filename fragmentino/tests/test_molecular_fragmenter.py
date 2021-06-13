@@ -90,9 +90,9 @@ class TestFragmenter:
         f.write(os.path.join(file_path, "medium_molecule_1"))
 
         m1 = Molecule.from_xyz_file(
-            os.path.join(file_path, "medium_molecule_1_full.xyz")
+            os.path.join(file_path, "medium_molecule_1_fragmented.xyz")
         )
-        os.remove(os.path.join(file_path, "medium_molecule_1_full.xyz"))
+        os.remove(os.path.join(file_path, "medium_molecule_1_fragmented.xyz"))
 
         m2 = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
 
