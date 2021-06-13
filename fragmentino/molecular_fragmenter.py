@@ -63,7 +63,7 @@ class MolecularFragmenter:
     def n_capped_bonds(self):
         return self.g.n_edges
 
-    def store_fragments(self, file_prefix):
+    def write_separate(self, file_prefix):
         """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
 
         Parameters
@@ -75,13 +75,21 @@ class MolecularFragmenter:
         for i, fragment in enumerate(self):
             fragment.write_xyz(file_prefix + "_fragment_" + str(i) + ".xyz")
 
-    def store_full(self, file_prefix):
+    def write(self, file_prefix):
+        """Writes fragments to a single file. Fragment i is stored to ``file_prefix_fragmented.xyz``
+
+        Parameters
+        ----------
+        file_prefix : str
+            prefix for file (with full or relative path).
+
+        """
         m = Molecule(self.g.vertices[0].Z, self.g.vertices[0].xyz)
         for i, fragment in enumerate(self):
             if i > 0:
                 m.merge(fragment)
 
-        m.write_xyz(file_prefix + "_full" + ".xyz")
+        m.write_xyz(file_prefix + "_fragmented" + ".xyz")
 
     def add_H_to_capped_bonds(self):
         """
