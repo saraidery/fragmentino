@@ -91,6 +91,16 @@ class Molecule:
     def __repr__(self):
         return f"{self.__class__.__name__} {self.size}"
 
+    def __len__(self):
+        return self.size
+
+    def __getitem__(self, key):
+        return Molecule(self.Z[key], self.xyz[key])
+
+    def __iter__(self):
+        for Z, xyz in zip(self.Z, self.xyz):
+            yield Z, xyz
+
     @property
     def distances(self):
         """Distances between atoms in molecule"""
@@ -118,6 +128,10 @@ class Molecule:
 
         return CM
 
+    @property
+    def symbols(self):
+        return list(map(Z_to_symbol, self.Z))
+
     def write_xyz(self, file_name):
         """Writes the molecular geometry to an xyz-file.
 
@@ -127,8 +141,7 @@ class Molecule:
             File name with full or relative path
         """
         fh = FileHandlerXYZ(file_name)
-        symbols = list(map(Z_to_symbol, self.Z))
-        fh.write(symbols, self.xyz)
+        fh.write(self.symbols, self.xyz)
 
     def merge(self, other):
         """Appends another molecule to it self.
@@ -190,10 +203,10 @@ class Molecule:
         bonds : list
             List of bonds, given as ``[atom_1_index, atom_2_index, distance]``.
         """
-        sum_covalent_radii = self._get_theoretical_covalent_bond_lengths()
+        theoretical_bond_lengths = self._get_theoretical_covalent_bond_lengths()
         distances = self.distances
 
-        rows, cols = np.where(distances < sum_covalent_radii)
+        rows, cols = np.where(distances < theoretical_bond_lengths)
 
         bonds = []
         for row, col in zip(rows, cols):
@@ -217,14 +230,14 @@ class Molecule:
         """
         distances = distance_matrix(self.xyz, other.xyz)
 
-        sum_covalent_radii = np.zeros((self.size, other.size))
+        theoretical_bond_lengths = np.zeros((self.size, other.size))
         for i, Z in enumerate(self.Z):
-            sum_covalent_radii[i, :] += Z_to_covalent_radius(Z) * self.bond_factor
+            theoretical_bond_lengths[i, :] += Z_to_covalent_radius(Z) * self.bond_factor
 
         for i, Z in enumerate(other.Z):
-            sum_covalent_radii[:, i] += Z_to_covalent_radius(Z) * self.bond_factor
+            theoretical_bond_lengths[:, i] += Z_to_covalent_radius(Z) * self.bond_factor
 
-        rows, cols = np.where(distances < sum_covalent_radii)
+        rows, cols = np.where(distances < theoretical_bond_lengths)
 
         bonds = []
         for row, col in zip(rows, cols):

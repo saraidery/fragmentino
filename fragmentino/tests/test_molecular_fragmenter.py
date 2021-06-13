@@ -54,12 +54,12 @@ class TestFragmenter:
         assert np.allclose(xyz_1, f.g.vertices[0].xyz)
         assert np.allclose(xyz_2, f.g.vertices[1].xyz)
 
-    def test_store(self):
+    def test_write(self):
         file_path = os.path.dirname(__file__)
 
         f = MolecularFragmenter(10, os.path.join(file_path, "small_molecule_1.xyz"))
 
-        f.store_fragments(os.path.join(file_path, "small_molecule_1"))
+        f.write_separate(os.path.join(file_path, "small_molecule_1"))
 
         m1 = Molecule.from_xyz_file(
             os.path.join(file_path, "small_molecule_1_fragment_0.xyz")
@@ -83,16 +83,16 @@ class TestFragmenter:
         assert central_fragment_before != central_fragment_after
         assert central_fragment_after == 0
 
-    def test_store_full(self):
+    def test_write(self):
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(30, os.path.join(file_path, "medium_molecule_1.xyz"))
 
-        f.store_full(os.path.join(file_path, "medium_molecule_1"))
+        f.write(os.path.join(file_path, "medium_molecule_1"))
 
         m1 = Molecule.from_xyz_file(
-            os.path.join(file_path, "medium_molecule_1_full.xyz")
+            os.path.join(file_path, "medium_molecule_1_fragmented.xyz")
         )
-        os.remove(os.path.join(file_path, "medium_molecule_1_full.xyz"))
+        os.remove(os.path.join(file_path, "medium_molecule_1_fragmented.xyz"))
 
         m2 = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
 
@@ -111,11 +111,6 @@ class TestFragmenter:
         after_reference = [4, 10, 10, 9]
         assert np.allclose(sizes_before, before_reference)
         assert np.allclose(sizes_after, after_reference)
-
-    def test_size(self):
-        file_path = os.path.dirname(__file__)
-        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
-        assert f.size == 33
 
     def test_n_fragments(self):
         file_path = os.path.dirname(__file__)
