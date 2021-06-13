@@ -12,7 +12,7 @@ import os
 
 from fragmentino import MolecularFragmenter
 from fragmentino import Molecule
-from fragmentino import Figure
+from fragmentino import MoleculeFigure
 
 
 class TestFragmenter:
@@ -131,7 +131,7 @@ class TestFragmenter:
         def mockreturn(v):
             return None
 
-        monkeypatch.setattr(Figure, "show_figure", mockreturn)
+        monkeypatch.setattr(MoleculeFigure, "show", mockreturn)
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
@@ -141,9 +141,9 @@ class TestFragmenter:
         def mockreturn(v):
             return None
 
-        monkeypatch.setattr(Figure, "show_figure", mockreturn)
+        monkeypatch.setattr(MoleculeFigure, "show", mockreturn)
 
         file_path = os.path.dirname(__file__)
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
 
-        f.plot_fragments("random")
+        f.plot_fragments("CPK")
