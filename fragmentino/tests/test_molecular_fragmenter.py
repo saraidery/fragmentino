@@ -54,7 +54,7 @@ class TestFragmenter:
         assert np.allclose(xyz_1, f.g.vertices[0].xyz)
         assert np.allclose(xyz_2, f.g.vertices[1].xyz)
 
-    def test_write(self):
+    def test_write_separate(self):
         file_path = os.path.dirname(__file__)
 
         f = MolecularFragmenter(10, os.path.join(file_path, "small_molecule_1.xyz"))
@@ -142,3 +142,17 @@ class TestFragmenter:
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
 
         f.plot_fragments("CPK")
+
+    def test_print(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        assert repr(f) == "MolecularFragmenter Fragments: 4 Capped bonds: 3"
+
+    def test_indexing(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        assert repr(f[2]) == "Molecule 9"

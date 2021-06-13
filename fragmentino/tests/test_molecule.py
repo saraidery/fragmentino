@@ -120,6 +120,7 @@ class TestMolecule:
         size = m.size
 
         assert np.allclose(size, xyz.shape[0])
+        assert np.allclose(size, len(m))
 
     def test_distances(self):
         file_path = os.path.dirname(__file__)
@@ -212,3 +213,22 @@ class TestMolecule:
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
         assert repr(m) == "Molecule 3"
+
+    def test_indexing(self):
+        file_path = os.path.dirname(__file__)
+        m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
+
+        xyz = [-0.86681, 0.60144, 0.0000]
+        Z = 1
+
+        assert repr(m[1]) == "Molecule 1"
+        assert np.allclose(m[1].xyz, xyz)
+        assert m[1].Z == Z
+
+    def test_iteration(self):
+        file_path = os.path.dirname(__file__)
+        m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
+
+        for i, (Z, xyz) in enumerate(m):
+            assert Z == m[i].Z
+            assert np.allclose(m[i].xyz, xyz)
