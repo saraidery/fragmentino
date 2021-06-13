@@ -218,11 +218,11 @@ class TestMolecule:
         file_path = os.path.dirname(__file__)
         m = Molecule.from_xyz_file(os.path.join(file_path, "small_molecule_1.xyz"))
 
-        xyz = [-0.86681,  0.60144,  0.0000 ]
+        xyz = [-0.86681, 0.60144, 0.0000]
         Z = 1
 
         assert repr(m[1]) == "Molecule 1"
-        assert np.allclose(m[1].xyz , xyz)
+        assert np.allclose(m[1].xyz, xyz)
         assert m[1].Z == Z
 
     def test_iteration(self):
@@ -231,5 +231,4 @@ class TestMolecule:
 
         for i, (Z, xyz) in enumerate(m):
             assert Z == m[i].Z
-            assert np.allclose(m[i].xyz , xyz)
-
+            assert np.allclose(m[i].xyz, xyz)
