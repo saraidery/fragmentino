@@ -11,7 +11,7 @@ sphinx:
   fail_on_warning: true
 
 # Build doc in all formats (HTML, PDF and ePub)
-formats: all
+formats: HTML
 
 # Python environment for building the docs
 python:
