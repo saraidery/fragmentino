@@ -12,7 +12,7 @@ sphinx:
 
 # Build doc in all formats (HTML, PDF and ePub)
 formats:
-  - html
+  - htmlzip
   - pdf
 
 # Python environment for building the docs
