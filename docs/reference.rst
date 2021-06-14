@@ -33,9 +33,9 @@ MolecularFragmenter
 Other classes
 -------------
 
-.. currentmodule:: molecule
+.. currentmodule:: fragmentino.molecule
 
-.. autoclass:: Molecule
+.. autoclass:: fragmentino.Molecule
     :members:
 
 .. currentmodule:: fragmentino.visualization_tools
