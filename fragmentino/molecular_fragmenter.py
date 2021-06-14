@@ -157,6 +157,19 @@ class MolecularFragmenter:
                 if j > i and fragment_i.same_size(fragment_j):
                     self.swap_fragments(i + 1, j)
 
+    def order_fragments_by_centrality(self):
+        """ Order fragments according to centrality, i.e.,
+        according to increasing distance to the average of the center of mass of the fragments.
+        """
+        CM = []
+        for fragment in self:
+            CM.append(fragment.center_of_mass)
+
+        CM = np.array(CM)
+
+        order = np.argsort(np.linalg.norm(CM - np.mean(CM, axis=0), axis=1))
+        self.g.vertices = [self.g.vertices[i] for i in order]
+
     def plot_fragments(self, colors="random", **kwargs):
         """Plot fragments.
 

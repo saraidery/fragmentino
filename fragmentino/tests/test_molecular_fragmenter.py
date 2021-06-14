@@ -156,3 +156,19 @@ class TestFragmenter:
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
 
         assert repr(f[2]) == "Molecule 9"
+
+    def test_order_fragments_by_centrality(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        f.order_fragments_by_centrality()
+
+        CM = []
+        for fragment in f:
+            CM.append(fragment.center_of_mass)
+
+        CM = np.array(CM)
+        order = np.argsort(np.linalg.norm(CM - np.mean(CM, axis=0), axis=1))
+
+        assert np.allclose(order, [0, 1, 2, 3])
