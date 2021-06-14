@@ -34,4 +34,14 @@ jobs:
         run: pip install black
       - name: Run black --check .
         run: black --check .
+      - name: Upload coverage to Coveralls
+        uses: AndreMiras/coveralls-python-action@develop
+
+  coveralls-finish:
+    needs: build-with-pip
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls finished
+      uses: AndreMiras/coveralls-python-action@develop
+
 
