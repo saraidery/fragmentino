@@ -25,9 +25,8 @@ The following classes are also available in the package
 MolecularFragmenter
 -------------------
 
-.. currentmodule:: fragmentino.molecular_fragmenter
 
-.. autoclass:: fragmentino.MolecularFragmenter
+.. autoclass:: MolecularFragmenter
     :members:
 
 Other classes
