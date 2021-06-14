@@ -17,7 +17,6 @@ A small Python package for fragmentation of molecules.
     :target: https://coveralls.io/github/saraidery/fragmentino?branch=main
     :alt: Line coverage
 
-
 Installation
 ------------
 The fragmentino package can currently only be installed from source.
