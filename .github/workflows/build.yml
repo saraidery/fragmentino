@@ -36,6 +36,8 @@ jobs:
         run: black --check .
       - name: Upload coverage to Coveralls
         uses: AndreMiras/coveralls-python-action@develop
+        with: 
+          parallel: true
 
   coveralls-finish:
     needs: build-with-pip
@@ -43,5 +45,7 @@ jobs:
     steps:
     - name: Coveralls finished
       uses: AndreMiras/coveralls-python-action@develop
+      with: 
+        parallel-finished: true
 
 
