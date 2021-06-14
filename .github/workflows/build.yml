@@ -46,6 +46,6 @@ jobs:
     - name: Coveralls finished
       uses: AndreMiras/coveralls-python-action@develop
       with: 
-        parallel-finished: true
+        parallel: true
 
 
