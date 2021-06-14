@@ -36,6 +36,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "nbsphinx",
+    "IPython.sphinxext.ipython_console_highlighting",
 ]
 
 # Create links to references within kikuchipy's documentation to these packages.
