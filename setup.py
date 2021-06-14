@@ -2,7 +2,7 @@ from setuptools import setup
 
 extra_requirements = {
     "tests": ["pytest", "coverage", "pytest-cov"],
-    "docs": [
+    "doc": [
         "sphinx",
         "sphinx-autodoc-typehints",
         "furo",
