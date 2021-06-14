@@ -8,7 +8,7 @@ extra_requirements = {
         "furo",
         "sphinx-copybutton",
         "nbsphinx",
-        "pygments",
+        "ipython",
     ],
 }
 
