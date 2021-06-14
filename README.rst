@@ -12,10 +12,9 @@ A small Python package for fragmentation of molecules.
     :target: https://fragmentino.readthedocs.io/en/latest/
     :alt: Documentation status
 
-.. Coveralls
 .. image:: https://coveralls.io/repos/github/saraidery/fragmentino/badge.svg?branch=main
     :target: https://coveralls.io/github/saraidery/fragmentino?branch=main
-    :alt: Line coverage
+    :alt: Coverage status
 
 Installation
 ------------
