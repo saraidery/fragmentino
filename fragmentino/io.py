@@ -71,7 +71,7 @@ class FileHandlerXYZ:
             f.write(str(xyz.shape[0])+"\n")
             f.write(comment+"\n")
             for symbol, pos in zip(symbols, xyz):
-                f.write("{} {:10f} {:10f} {:10f}".format(symbol, pos[0], pos[1], pos[2]))
+                f.write("{} {:15.10f} {:15.10f} {:15.10f}".format(symbol, pos[0], pos[1], pos[2]))
                 f.write("\n")
 
 

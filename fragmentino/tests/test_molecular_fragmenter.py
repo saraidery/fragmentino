@@ -43,12 +43,12 @@ class TestFragmenter:
 
         f.add_H_to_capped_bonds()
 
-        xyz_1 = [[-0.86681, 0.60144, 0.0000], [-0.23167467, 0.1052151, 0.0000]]
+        xyz_1 = [[-0.86681, 0.60144, 0.],[-0.29518825,  0.15483761,  0. ]]
 
         xyz_2 = [
-            [0.86681, 0.601, 0.0000],
-            [0.0000, -0.07579, 0.0000],
-            [-0.9936795, 0.7005619, 0.0000],
+            [ 0.86681, 0.601, 0.],
+            [ 0., -0.07579, 0.],
+            [-0.8943115, 0.62292665, 0.],
         ]
 
         assert np.allclose(xyz_1, f.g.vertices[0].xyz)
@@ -96,6 +96,7 @@ class TestFragmenter:
 
         m2 = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
 
+        print(np.sort(m1.xyz, axis=0))
         assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
         assert np.allclose(np.sort(m1.Z), np.sort(m2.Z))
 
