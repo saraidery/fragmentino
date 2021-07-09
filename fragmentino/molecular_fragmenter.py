@@ -29,6 +29,8 @@ class MolecularFragmenter:
         """
 
         self.m = Molecule.from_xyz_file(file_name)
+        self.n_added_H = 0
+        self.added_H = []
         self.g = ContractableWeightedGraph(max_fragment_size)
         self._fragment()
 
@@ -94,14 +96,36 @@ class MolecularFragmenter:
 
         m.write_xyz(
             file_prefix + "_fragmented" + ".xyz",
-            f"Generated with Fragmentino.",
+            self.get_fragment_string_(),
         )
+
+    def get_fragment_string_(self):
+
+        fragment_string = "Fragments:"
+
+        offset = 0
+        for fragment, size in enumerate(self.fragment_sizes):
+            fragment_string = fragment_string + f" {fragment + 1}([{offset + 1}, {offset + size}])"
+            offset = offset + size
+
+        if (self.n_capped_bonds > 0):
+            fragment_string = fragment_string + "; Capped bonds:"
+
+            for n, edge in enumerate(self.g.edges):
+                fragment_string = fragment_string + f" {n + 1}({edge[0] + 1}, {edge[1] + 1})"
+
+        if (self.n_added_H > 0):
+            fragment_string = fragment_string + f"; Added H: {self.n_added_H}"
+
+        return fragment_string
 
     def add_H_to_capped_bonds(self):
         """
         Hydrogen is added with an apropriate bond length (given by covalent radii)
         in a direction given by the unit vector along the capped bond.
         """
+        self.n_added_H = self.n_capped_bonds*2
+
         Z_H = 1
         for v1, v2 in self.g.edges:
 
