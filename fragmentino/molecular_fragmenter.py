@@ -63,7 +63,10 @@ class MolecularFragmenter:
     def n_capped_bonds(self):
         return self.g.n_edges
 
-    def write_separate(self, file_prefix, ):
+    def write_separate(
+        self,
+        file_prefix,
+    ):
         """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
 
         Parameters
@@ -89,7 +92,10 @@ class MolecularFragmenter:
             if i > 0:
                 m.merge(fragment)
 
-        m.write_xyz(file_prefix + "_fragmented" + ".xyz", "some details about the fragments")
+        m.write_xyz(
+            file_prefix + "_fragmented" + ".xyz",
+            f"Generated with Fragmentino.",
+        )
 
     def add_H_to_capped_bonds(self):
         """
@@ -158,7 +164,7 @@ class MolecularFragmenter:
                     self.swap_fragments(i + 1, j)
 
     def order_fragments_by_centrality(self):
-        """ Order fragments according to centrality, i.e.,
+        """Order fragments according to centrality, i.e.,
         with respect to increasing distance to the average of the center of mass of the fragments.
         """
         CM = []
