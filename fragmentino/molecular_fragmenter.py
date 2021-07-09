@@ -63,7 +63,7 @@ class MolecularFragmenter:
     def n_capped_bonds(self):
         return self.g.n_edges
 
-    def write_separate(self, file_prefix):
+    def write_separate(self, file_prefix, ):
         """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
 
         Parameters
@@ -89,7 +89,7 @@ class MolecularFragmenter:
             if i > 0:
                 m.merge(fragment)
 
-        m.write_xyz(file_prefix + "_fragmented" + ".xyz")
+        m.write_xyz(file_prefix + "_fragmented" + ".xyz", "some details about the fragments")
 
     def add_H_to_capped_bonds(self):
         """
@@ -112,11 +112,11 @@ class MolecularFragmenter:
                 n = r / (np.linalg.norm(r))
 
                 # add H to m1
-                length = Z_to_bond_length(m1.Z[a1], Z_H, m1.bond_factor)
+                length = Z_to_bond_length(m1.Z[a1], Z_H, m1.bond_factor) * 0.9
                 m1.add_atom(Z_H, m1.xyz[a1, :] + n * length)
 
                 # add H to m2
-                length = Z_to_bond_length(m2.Z[a2], Z_H, m2.bond_factor)
+                length = Z_to_bond_length(m2.Z[a2], Z_H, m2.bond_factor) * 0.9
                 m2.add_atom(Z_H, m2.xyz[a2, :] - n * length)
 
     def find_central_fragment(self):
@@ -159,7 +159,7 @@ class MolecularFragmenter:
 
     def order_fragments_by_centrality(self):
         """ Order fragments according to centrality, i.e.,
-        according to increasing distance to the average of the center of mass of the fragments.
+        with respect to increasing distance to the average of the center of mass of the fragments.
         """
         CM = []
         for fragment in self:
@@ -181,7 +181,7 @@ class MolecularFragmenter:
             Keyword arguments passed to :meth:`plotly.graph_objects.Figure.show`.
         """
         plots = []
-        for fragment in self:
+        for i, fragment in enumerate(self):
 
             if colors == "random":
                 color = "#%06x" % random.randint(0, 0xFFFFFF)
@@ -190,8 +190,8 @@ class MolecularFragmenter:
 
             plotter = MoleculePlotter(fragment, color)
 
-            plots.append(plotter.get_bond_plot())
-            plots.append(plotter.get_atom_plot())
+            plots.append(plotter.get_bond_plot(label="fragment " + str(i)))
+            plots.append(plotter.get_atom_plot(label="fragment " + str(i)))
 
         v = MoleculeFigure(data=plots)
         v.show(**kwargs)

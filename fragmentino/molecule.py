@@ -132,7 +132,7 @@ class Molecule:
     def symbols(self):
         return list(map(Z_to_symbol, self.Z))
 
-    def write_xyz(self, file_name):
+    def write_xyz(self, file_name, comment=""):
         """Writes the molecular geometry to an xyz-file.
 
         Parameters
@@ -141,7 +141,7 @@ class Molecule:
             File name with full or relative path
         """
         fh = FileHandlerXYZ(file_name)
-        fh.write(self.symbols, self.xyz)
+        fh.write(self.symbols, self.xyz, comment=comment)
 
     def merge(self, other):
         """Appends another molecule to it self.
