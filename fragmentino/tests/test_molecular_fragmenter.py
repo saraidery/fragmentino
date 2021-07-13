@@ -96,9 +96,29 @@ class TestFragmenter:
 
         m2 = Molecule.from_xyz_file(os.path.join(file_path, "medium_molecule_1.xyz"))
 
-        print(np.sort(m1.xyz, axis=0))
         assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
         assert np.allclose(np.sort(m1.Z), np.sort(m2.Z))
+
+    def test_write_with_H(self):
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(2, os.path.join(file_path, "small_molecule_1.xyz"))
+
+        f.add_H_to_capped_bonds()
+        f.write(os.path.join(file_path, "small_molecule_1"))
+
+        m1 = Molecule.from_xyz_file(
+            os.path.join(file_path, "small_molecule_1_fragmented.xyz")
+        )
+        os.remove(os.path.join(file_path, "small_molecule_1_fragmented.xyz"))
+        xyz = [
+            [-0.86681000, 0.60144000, 0.0],
+            [-0.29518825, 0.15483761, 0.0],
+            [0.86681000, 0.60100000, 0.0],
+            [0.00000000, -0.07579000, 0.0],
+            [-0.89431150, 0.62292665, 0.0],
+        ]
+
+        assert np.allclose(m1.xyz, xyz)
 
     def test_group_fragments(self):
         file_path = os.path.dirname(__file__)
