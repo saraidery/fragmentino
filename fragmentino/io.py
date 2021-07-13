@@ -67,11 +67,15 @@ class FileHandlerXYZ:
             Optional comment for xyz-file comment line
 
         """
-        with open(self.file_name, 'w') as f:
-            f.write(str(xyz.shape[0])+"\n")
-            f.write(comment+"\n")
+        with open(self.file_name, "w") as f:
+            f.write(str(xyz.shape[0]) + "\n")
+            f.write(comment + "\n")
             for symbol, pos in zip(symbols, xyz):
-                f.write("{} {:15.10f} {:15.10f} {:15.10f}".format(symbol, pos[0], pos[1], pos[2]))
+                f.write(
+                    "{} {:15.10f} {:15.10f} {:15.10f}".format(
+                        symbol, pos[0], pos[1], pos[2]
+                    )
+                )
                 f.write("\n")
 
 

@@ -105,16 +105,20 @@ class MolecularFragmenter:
 
         offset = 0
         for fragment, size in enumerate(self.fragment_sizes):
-            fragment_string = fragment_string + f" {fragment + 1}([{offset + 1}, {offset + size}])"
+            fragment_string = (
+                fragment_string + f" {fragment + 1}([{offset + 1}, {offset + size}])"
+            )
             offset = offset + size
 
-        if (self.n_capped_bonds > 0):
+        if self.n_capped_bonds > 0:
             fragment_string = fragment_string + "; Capped bonds:"
 
             for n, edge in enumerate(self.g.edges):
-                fragment_string = fragment_string + f" {n + 1}({edge[0] + 1}, {edge[1] + 1})"
+                fragment_string = (
+                    fragment_string + f" {n + 1}({edge[0] + 1}, {edge[1] + 1})"
+                )
 
-        if (self.n_added_H > 0):
+        if self.n_added_H > 0:
             fragment_string = fragment_string + f"; Added H: {self.n_added_H}"
 
         return fragment_string
@@ -124,7 +128,7 @@ class MolecularFragmenter:
         Hydrogen is added with an apropriate bond length (given by covalent radii)
         in a direction given by the unit vector along the capped bond.
         """
-        self.n_added_H = self.n_capped_bonds*2
+        self.n_added_H = self.n_capped_bonds * 2
 
         Z_H = 1
         for v1, v2 in self.g.edges:
