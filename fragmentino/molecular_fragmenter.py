@@ -93,7 +93,7 @@ class MolecularFragmenter:
 
         m.write_xyz(
             file_prefix + "_fragmented" + ".xyz",
-            self._get_fragment_string_(),
+            self._get_fragment_string(),
         )
 
     def _get_fragment_string(self):
