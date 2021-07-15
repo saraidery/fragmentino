@@ -65,10 +65,7 @@ class MolecularFragmenter:
     def n_capped_bonds(self):
         return self.g.n_edges
 
-    def write_separate(
-        self,
-        file_prefix,
-    ):
+    def write_separate(self, file_prefix):
         """Writes fragments to file. Fragment i is stored to ``file_prefix_fragment_i.xyz``
 
         Parameters
@@ -111,7 +108,7 @@ class MolecularFragmenter:
             offset = offset + size
 
         if self.n_capped_bonds > 0:
-            fragment_string = fragment_string + "; Capped bonds:"
+            fragment_string += "; Capped bonds:"
 
             for n, edge in enumerate(self.g.edges):
                 fragment_string = (
@@ -119,7 +116,7 @@ class MolecularFragmenter:
                 )
 
         if self.n_added_H > 0:
-            fragment_string = fragment_string + f"; Added H: {self.n_added_H}"
+            fragment_string += f"; Added H: {self.n_added_H}"
 
         return fragment_string
 

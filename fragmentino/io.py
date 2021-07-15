@@ -71,14 +71,9 @@ class FileHandlerXYZ:
             f.write(str(xyz.shape[0]) + "\n")
             f.write(comment + "\n")
             for symbol, pos in zip(symbols, xyz):
-                f.write(
-                    "{} {:15.10f} {:15.10f} {:15.10f}".format(
-                        symbol, pos[0], pos[1], pos[2]
-                    )
-                )
-                f.write("\n")
+                f.write(f"{symbol} {pos[0]:15.10f} {pos[1]:15.10f} {pos[2]:15.10f}\n")
 
 
 def _remove_zero_width_whitespace(string):
     """Remove non-zero whitespaces"""
-    return string.strip(u"\u200b")
+    return string.strip("\u200b")
