@@ -43,12 +43,12 @@ class TestFragmenter:
 
         f.add_H_to_capped_bonds()
 
-        xyz_1 = [[-0.86681, 0.60144, 0.0000], [-0.23167467, 0.1052151, 0.0000]]
+        xyz_1 = [[-0.86681, 0.60144, 0.0], [-0.29518825, 0.15483761, 0.0]]
 
         xyz_2 = [
-            [0.86681, 0.601, 0.0000],
-            [0.0000, -0.07579, 0.0000],
-            [-0.9936795, 0.7005619, 0.0000],
+            [0.86681, 0.601, 0.0],
+            [0.0, -0.07579, 0.0],
+            [-0.8943115, 0.62292665, 0.0],
         ]
 
         assert np.allclose(xyz_1, f.g.vertices[0].xyz)
@@ -98,6 +98,27 @@ class TestFragmenter:
 
         assert np.allclose(np.sort(m1.xyz, axis=0), np.sort(m2.xyz, axis=0))
         assert np.allclose(np.sort(m1.Z), np.sort(m2.Z))
+
+    def test_write_with_H(self):
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(2, os.path.join(file_path, "small_molecule_1.xyz"))
+
+        f.add_H_to_capped_bonds()
+        f.write(os.path.join(file_path, "small_molecule_1"))
+
+        m1 = Molecule.from_xyz_file(
+            os.path.join(file_path, "small_molecule_1_fragmented.xyz")
+        )
+        os.remove(os.path.join(file_path, "small_molecule_1_fragmented.xyz"))
+        xyz = [
+            [-0.86681000, 0.60144000, 0.0],
+            [-0.29518825, 0.15483761, 0.0],
+            [0.86681000, 0.60100000, 0.0],
+            [0.00000000, -0.07579000, 0.0],
+            [-0.89431150, 0.62292665, 0.0],
+        ]
+
+        assert np.allclose(m1.xyz, xyz)
 
     def test_group_fragments(self):
         file_path = os.path.dirname(__file__)
@@ -156,3 +177,19 @@ class TestFragmenter:
         f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
 
         assert repr(f[2]) == "Molecule 9"
+
+    def test_order_fragments_by_centrality(self):
+
+        file_path = os.path.dirname(__file__)
+        f = MolecularFragmenter(10, os.path.join(file_path, "medium_molecule_1.xyz"))
+
+        f.order_fragments_by_centrality()
+
+        CM = []
+        for fragment in f:
+            CM.append(fragment.center_of_mass)
+
+        CM = np.array(CM)
+        order = np.argsort(np.linalg.norm(CM - np.mean(CM, axis=0), axis=1))
+
+        assert np.allclose(order, [0, 1, 2, 3])

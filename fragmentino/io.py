@@ -67,17 +67,13 @@ class FileHandlerXYZ:
             Optional comment for xyz-file comment line
 
         """
-
-        np.savetxt(
-            self.file_name,
-            np.c_[symbols, xyz],
-            encoding="utf-8",
-            fmt="%s %.20s %.20s %.20s",
-            header="\n".join([str(xyz.shape[0]), comment]),
-            comments="",
-        )
+        with open(self.file_name, "w") as f:
+            f.write(str(xyz.shape[0]) + "\n")
+            f.write(comment + "\n")
+            for symbol, pos in zip(symbols, xyz):
+                f.write(f"{symbol} {pos[0]:15.10f} {pos[1]:15.10f} {pos[2]:15.10f}\n")
 
 
 def _remove_zero_width_whitespace(string):
     """Remove non-zero whitespaces"""
-    return string.strip(u"\u200b")
+    return string.strip("\u200b")

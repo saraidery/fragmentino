@@ -29,6 +29,8 @@ class MolecularFragmenter:
         """
 
         self.m = Molecule.from_xyz_file(file_name)
+        self.n_added_H = 0
+        self.added_H = []
         self.g = ContractableWeightedGraph(max_fragment_size)
         self._fragment()
 
@@ -89,13 +91,42 @@ class MolecularFragmenter:
             if i > 0:
                 m.merge(fragment)
 
-        m.write_xyz(file_prefix + "_fragmented" + ".xyz")
+        m.write_xyz(
+            file_prefix + "_fragmented" + ".xyz",
+            self._get_fragment_string(),
+        )
+
+    def _get_fragment_string(self):
+
+        fragment_string = "Fragments:"
+
+        offset = 0
+        for fragment, size in enumerate(self.fragment_sizes):
+            fragment_string = (
+                fragment_string + f" {fragment + 1}([{offset + 1}, {offset + size}])"
+            )
+            offset = offset + size
+
+        if self.n_capped_bonds > 0:
+            fragment_string += "; Capped bonds:"
+
+            for n, edge in enumerate(self.g.edges):
+                fragment_string = (
+                    fragment_string + f" {n + 1}({edge[0] + 1}, {edge[1] + 1})"
+                )
+
+        if self.n_added_H > 0:
+            fragment_string += f"; Added H: {self.n_added_H}"
+
+        return fragment_string
 
     def add_H_to_capped_bonds(self):
         """
         Hydrogen is added with an apropriate bond length (given by covalent radii)
         in a direction given by the unit vector along the capped bond.
         """
+        self.n_added_H = self.n_capped_bonds * 2
+
         Z_H = 1
         for v1, v2 in self.g.edges:
 
@@ -112,11 +143,11 @@ class MolecularFragmenter:
                 n = r / (np.linalg.norm(r))
 
                 # add H to m1
-                length = Z_to_bond_length(m1.Z[a1], Z_H, m1.bond_factor)
+                length = Z_to_bond_length(m1.Z[a1], Z_H, m1.bond_factor) * 0.9
                 m1.add_atom(Z_H, m1.xyz[a1, :] + n * length)
 
                 # add H to m2
-                length = Z_to_bond_length(m2.Z[a2], Z_H, m2.bond_factor)
+                length = Z_to_bond_length(m2.Z[a2], Z_H, m2.bond_factor) * 0.9
                 m2.add_atom(Z_H, m2.xyz[a2, :] - n * length)
 
     def find_central_fragment(self):
@@ -157,6 +188,19 @@ class MolecularFragmenter:
                 if j > i and fragment_i.same_size(fragment_j):
                     self.swap_fragments(i + 1, j)
 
+    def order_fragments_by_centrality(self):
+        """Order fragments according to centrality, i.e.,
+        with respect to increasing distance to the average of the center of mass of the fragments.
+        """
+        CM = []
+        for fragment in self:
+            CM.append(fragment.center_of_mass)
+
+        CM = np.array(CM)
+
+        order = np.argsort(np.linalg.norm(CM - np.mean(CM, axis=0), axis=1))
+        self.g.vertices = [self.g.vertices[i] for i in order]
+
     def plot_fragments(self, colors="random", **kwargs):
         """Plot fragments.
 
@@ -168,7 +212,7 @@ class MolecularFragmenter:
             Keyword arguments passed to :meth:`plotly.graph_objects.Figure.show`.
         """
         plots = []
-        for fragment in self:
+        for i, fragment in enumerate(self):
 
             if colors == "random":
                 color = "#%06x" % random.randint(0, 0xFFFFFF)
@@ -177,8 +221,8 @@ class MolecularFragmenter:
 
             plotter = MoleculePlotter(fragment, color)
 
-            plots.append(plotter.get_bond_plot())
-            plots.append(plotter.get_atom_plot())
+            plots.append(plotter.get_bond_plot(label="fragment " + str(i)))
+            plots.append(plotter.get_atom_plot(label="fragment " + str(i)))
 
         v = MoleculeFigure(data=plots)
         v.show(**kwargs)
